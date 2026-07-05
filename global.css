@@ -1,0 +1,68 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: 218 21% 87%;
+    --foreground: 0 0% 5%;
+    --card: 218 24% 89%;
+    --card-foreground: 0 0% 5%;
+    --popover: 218 24% 89%;
+    --popover-foreground: 0 0% 5%;
+    --primary: 0 0% 5%;
+    --primary-foreground: 218 21% 87%;
+    --secondary: 218 15% 81%;
+    --secondary-foreground: 0 0% 5%;
+    --muted: 218 15% 81%;
+    --muted-foreground: 217 14% 43%;
+    --accent: 216 16% 75%;
+    --accent-foreground: 0 0% 5%;
+    --destructive: 0 72% 51%;
+    --destructive-foreground: 0 0% 98%;
+    --border: 218 16% 74%;
+    --input: 218 16% 74%;
+    --ring: 0 0% 5%;
+    --brand: 41 96% 40%;
+    --sidebar: 218 21% 87%;
+    --sidebar-foreground: 0 0% 5%;
+    --sidebar-primary: 0 0% 5%;
+    --sidebar-primary-foreground: 218 21% 87%;
+    --sidebar-accent: 216 16% 75%;
+    --sidebar-accent-foreground: 0 0% 5%;
+    --sidebar-border: 218 16% 72%;
+    --sidebar-ring: 0 0% 5%;
+    --radius: 0.625rem;
+  }
+
+  .dark {
+    --background: 0 0% 5%;
+    --foreground: 218 21% 87%;
+    --card: 218 37% 13%;
+    --card-foreground: 218 21% 87%;
+    --popover: 218 37% 13%;
+    --popover-foreground: 218 21% 87%;
+    --primary: 218 21% 87%;
+    --primary-foreground: 0 0% 5%;
+    --secondary: 216 34% 16%;
+    --secondary-foreground: 218 21% 87%;
+    --muted: 216 34% 16%;
+    --muted-foreground: 215 17% 60%;
+    --accent: 215 34% 18%;
+    --accent-foreground: 218 21% 87%;
+    --destructive: 0 84% 60%;
+    --destructive-foreground: 0 0% 98%;
+    --border: 218 30% 18%;
+    --input: 218 28% 20%;
+    --ring: 218 21% 87%;
+    --brand: 41 96% 40%;
+    --sidebar: 0 0% 5%;
+    --sidebar-foreground: 218 21% 87%;
+    --sidebar-primary: 218 21% 87%;
+    --sidebar-primary-foreground: 0 0% 5%;
+    --sidebar-accent: 215 34% 18%;
+    --sidebar-accent-foreground: 218 21% 87%;
+    --sidebar-border: 218 30% 18%;
+    --sidebar-ring: 218 21% 87%;
+  }
+}

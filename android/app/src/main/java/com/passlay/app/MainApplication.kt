@@ -1,4 +1,4 @@
-package com.ticketing_app
+package com.passlay.app
 
 import android.app.Application
 import com.facebook.react.PackageList

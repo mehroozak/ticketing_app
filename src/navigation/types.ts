@@ -59,8 +59,6 @@ export type PortalDrawerParamList = {
 export type StaffStackParamList = {
   AssignedEvents: undefined;
   EventCheckin: { eventId: string; eventName: string };
-  Scanner: { eventId: string; eventName: string };
-  CheckInLog: { eventId: string; eventName: string };
 };
 
 // ── Typed screen props ────────────────────────────────────────────────────────

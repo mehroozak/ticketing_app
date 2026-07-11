@@ -154,11 +154,11 @@ export default function PortalDrawerNavigator() {
   return (
     <Drawer.Navigator
       drawerContent={(props) => <DrawerContent {...props} />}
-      screenOptions={{ headerShown: false }}
+      screenOptions={{ headerShown: true }}
     >
-      <Drawer.Screen name="MyTickets" component={MyTicketsScreen} />
-      <Drawer.Screen name="Profile" component={ProfileScreen} />
-      <Drawer.Screen name="Staff" component={StaffStackNavigator} />
+      <Drawer.Screen name="MyTickets" component={MyTicketsScreen} options={{ title: 'My Tickets' }} />
+      <Drawer.Screen name="Profile" component={ProfileScreen} options={{ title: 'Profile' }} />
+      <Drawer.Screen name="Staff" component={StaffStackNavigator} options={{ title: 'Staff' }} />
     </Drawer.Navigator>
   )
 }

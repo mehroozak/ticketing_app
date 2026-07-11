@@ -18,6 +18,7 @@ import themeReducer from './slices/themeSlice'
 import contextReducer from './slices/contextSlice'
 import lookupsReducer from './slices/lookupsSlice'
 import settingsReducer from './slices/settingsSlice'
+import checkinReducer from './slices/checkinSlice'
 
 const rootReducer = combineReducers({
   auth: authReducer,
@@ -25,6 +26,7 @@ const rootReducer = combineReducers({
   context: contextReducer,
   lookups: lookupsReducer,
   settings: settingsReducer,
+  checkin: checkinReducer,
 })
 
 // Wipe entire state on logout (same pattern as web)
@@ -40,7 +42,7 @@ const persistConfig = {
   version: 1,
   storage: AsyncStorage,
   // lookups is excluded — always re-fetched fresh on boot
-  whitelist: ['auth', 'theme', 'context', 'settings'],
+  whitelist: ['auth', 'theme', 'context', 'settings', 'checkin'],
 }
 
 const persistedReducer = persistReducer(persistConfig, appReducer)

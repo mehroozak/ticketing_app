@@ -8,12 +8,21 @@ import { logout, setCredentials } from '../store/slices/authSlice'
 import type { RefreshResponse } from '../types/auth'
 import { END_POINTS } from '../lib/endpoints'
 
-// Lazy store import — avoids circular dependency (store imports slices, slices import api)
 const getStore = () => import('../store/index').then((m) => m.store)
 
-const BASE_URL = __DEV__
-  ? 'https://itlcz-72-255-51-63.run.pinggy-free.link'
-  : 'https://api.passlay.com'
+declare module 'axios' {
+  export interface AxiosRequestConfig {
+    // Set on requests that already handle their own failure silently (e.g. background sync)
+    // so the response interceptor doesn't also surface a user-facing error toast.
+    skipErrorToast?: boolean
+  }
+}
+
+// const BASE_URL = __DEV__
+//   ? 'https://itlcz-72-255-51-63.run.pinggy-free.link'
+//   : 'https://api.passlay.com'
+
+  const BASE_URL = 'https://qeqoy-154-57-223-189.run.pinggy-free.link'
 
 const getTimezone = () => {
   try {
@@ -196,9 +205,9 @@ secureApi.interceptors.response.use(
       }
     }
 
-    // Don't double-toast if it was a refresh endpoint failure
+    // Don't double-toast if it was a refresh endpoint failure, or if the caller opted out
     const isRefreshEndpoint = originalRequest.url?.includes(END_POINTS.TOKEN_REFRESH)
-    if (!isRefreshEndpoint) {
+    if (!isRefreshEndpoint && !originalRequest.skipErrorToast) {
       const { message } = parseApiError(error)
       showErrorToast(message)
     }

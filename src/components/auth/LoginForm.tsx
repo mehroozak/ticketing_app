@@ -9,6 +9,7 @@ import { useAppDispatch } from '../../store/hooks'
 import { setCredentials } from '../../store/slices/authSlice'
 import { publicApi, type ApiEnvelope } from '../../services/api'
 import { END_POINTS } from '../../lib/endpoints'
+import { useSocialAuth } from '../../hooks/useSocialAuth'
 import type { AuthResponse } from '../../types/auth'
 import type { AuthStackParamList } from '../../navigation/types'
 import { Button } from '../ui/button'
@@ -25,6 +26,7 @@ type LoginFormValues = z.infer<typeof loginSchema>
 export default function LoginForm() {
   const navigation = useNavigation<NativeStackNavigationProp<AuthStackParamList, 'Login'>>()
   const dispatch = useAppDispatch()
+  const { triggerGoogle, triggerFacebook, isGoogleLoading, isFacebookLoading } = useSocialAuth()
 
   const {
     control,
@@ -117,12 +119,11 @@ export default function LoginForm() {
           <Text className="mx-auto bg-background px-2 text-xs uppercase text-muted-foreground">or</Text>
         </View>
 
-        {/* Placeholders — native Google/Facebook SDKs aren't installed yet */}
-        <Button variant="outline" disabled>
-          <Text>Continue with Google</Text>
+        <Button variant="outline" onPress={triggerGoogle} disabled={isGoogleLoading}>
+          <Text>{isGoogleLoading ? 'Signing in…' : 'Continue with Google'}</Text>
         </Button>
-        <Button variant="outline" disabled>
-          <Text>Continue with Facebook</Text>
+        <Button variant="outline" onPress={triggerFacebook} disabled={isFacebookLoading}>
+          <Text>{isFacebookLoading ? 'Signing in…' : 'Continue with Facebook'}</Text>
         </Button>
       </View>
 

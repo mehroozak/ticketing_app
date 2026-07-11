@@ -5,8 +5,12 @@ require Pod::Executable.execute_command('node', ['-p',
     {paths: [process.argv[1]]},
   )', __dir__]).strip
 
-platform :ios, min_ios_version_supported
+platform :ios, '15.5' # bumped from min_ios_version_supported (15.1) — required by GoogleMLKit/BarcodeScanning
 prepare_react_native_project!
+
+# react-native-fbsdk-next pulls in AppCheckCore/GoogleUtilities/RecaptchaInterop,
+# which don't define modules — required for those to build as static libs.
+use_modular_headers!
 
 linkage = ENV['USE_FRAMEWORKS']
 if linkage != nil

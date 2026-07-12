@@ -18,11 +18,10 @@ declare module 'axios' {
   }
 }
 
-// const BASE_URL = __DEV__
-//   ? 'https://itlcz-72-255-51-63.run.pinggy-free.link'
-//   : 'https://api.passlay.com'
+const BASE_URL = __DEV__
+  ? 'https://api.passlay.com'
+  : 'https://api.passlay.com'
 
-  const BASE_URL = 'https://qeqoy-154-57-223-189.run.pinggy-free.link'
 
 const getTimezone = () => {
   try {

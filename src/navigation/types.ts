@@ -48,10 +48,17 @@ export type AuthStackParamList = {
 
 export type PortalDrawerParamList = {
   // Personal context
-  MyTickets: undefined;
+  MyTickets: NavigatorScreenParams<OrdersStackParamList>;
   Profile: undefined;
   // Staff context
   Staff: NavigatorScreenParams<StaffStackParamList>;
+};
+
+// ── Orders stack (inside Portal drawer) ───────────────────────────────────────
+
+export type OrdersStackParamList = {
+  MyTicketsList: undefined;
+  OrderDetail: { orderId: string };
 };
 
 // ── Staff stack (inside Portal drawer) ───────────────────────────────────────
@@ -100,6 +107,12 @@ export type PortalDrawerScreenProps<T extends keyof PortalDrawerParamList> =
 export type StaffStackScreenProps<T extends keyof StaffStackParamList> =
   CompositeScreenProps<
     NativeStackScreenProps<StaffStackParamList, T>,
+    DrawerScreenProps<PortalDrawerParamList>
+  >;
+
+export type OrdersStackScreenProps<T extends keyof OrdersStackParamList> =
+  CompositeScreenProps<
+    NativeStackScreenProps<OrdersStackParamList, T>,
     DrawerScreenProps<PortalDrawerParamList>
   >;
 

@@ -20,6 +20,7 @@ import lookupsReducer from './slices/lookupsSlice'
 import settingsReducer from './slices/settingsSlice'
 import checkinReducer from './slices/checkinSlice'
 import assignedEventsReducer from './slices/assignedEventsSlice'
+import ordersReducer from './slices/ordersSlice'
 
 const rootReducer = combineReducers({
   auth: authReducer,
@@ -29,6 +30,7 @@ const rootReducer = combineReducers({
   settings: settingsReducer,
   checkin: checkinReducer,
   assignedEvents: assignedEventsReducer,
+  orders: ordersReducer,
 })
 
 // Wipe entire state on logout (same pattern as web)

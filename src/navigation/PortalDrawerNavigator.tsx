@@ -16,7 +16,7 @@ import {
   switchToPersonal,
 } from '../store/slices/contextSlice'
 import { selectUser, logout } from '../store/slices/authSlice'
-import MyTicketsScreen from '../screens/portal/user/MyTicketsScreen'
+import OrdersStackNavigator from './OrdersStackNavigator'
 import ProfileScreen from '../screens/portal/user/ProfileScreen'
 import StaffStackNavigator from './StaffStackNavigator'
 
@@ -156,7 +156,7 @@ export default function PortalDrawerNavigator() {
       drawerContent={(props) => <DrawerContent {...props} />}
       screenOptions={{ headerShown: true }}
     >
-      <Drawer.Screen name="MyTickets" component={MyTicketsScreen} options={{ title: 'My Tickets' }} />
+      <Drawer.Screen name="MyTickets" component={OrdersStackNavigator} options={{ title: 'My Tickets' }} />
       <Drawer.Screen name="Profile" component={ProfileScreen} options={{ title: 'Profile' }} />
       <Drawer.Screen name="Staff" component={StaffStackNavigator} options={{ title: 'Staff' }} />
     </Drawer.Navigator>

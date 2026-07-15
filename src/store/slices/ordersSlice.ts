@@ -12,6 +12,7 @@ interface OrdersState {
   status: FetchStatus
   detailsById: Record<number, OrderDetail>
   detailStatus: FetchStatus
+  createStatus: FetchStatus
 }
 
 const initialState: OrdersState = {
@@ -19,6 +20,7 @@ const initialState: OrdersState = {
   status: 'idle',
   detailsById: {},
   detailStatus: 'idle',
+  createStatus: 'idle',
 }
 
 export const fetchOrders = createAsyncThunk('orders/fetchAll', async () => {
@@ -28,6 +30,16 @@ export const fetchOrders = createAsyncThunk('orders/fetchAll', async () => {
 
 export const fetchOrderDetail = createAsyncThunk('orders/fetchDetail', async (orderId: number) => {
   const res = await secureApi.get<{ data: OrderDetail }>(END_POINTS.ORDER_DETAIL(orderId))
+  return res.data.data
+})
+
+export interface CreateOrderPayload {
+  event: number
+  items: { ticket_tier: number; quantity: number }[]
+}
+
+export const createOrder = createAsyncThunk('orders/create', async (payload: CreateOrderPayload) => {
+  const res = await secureApi.post<{ data: OrderDetail }>(END_POINTS.ORDERS, payload)
   return res.data.data
 })
 
@@ -57,6 +69,16 @@ const ordersSlice = createSlice({
       .addCase(fetchOrderDetail.rejected, (state) => {
         state.detailStatus = 'failed'
       })
+      .addCase(createOrder.pending, (state) => {
+        state.createStatus = 'loading'
+      })
+      .addCase(createOrder.fulfilled, (state, action) => {
+        state.createStatus = 'succeeded'
+        state.detailsById[action.payload.id] = action.payload
+      })
+      .addCase(createOrder.rejected, (state) => {
+        state.createStatus = 'failed'
+      })
       .addCase(logout, () => initialState)
   },
 })
@@ -68,3 +90,4 @@ export const selectOrdersStatus = (state: RootState) => state.orders.status
 export const selectOrderDetailStatus = (state: RootState) => state.orders.detailStatus
 export const selectOrderDetail = (orderId: number) => (state: RootState) =>
   state.orders.detailsById[orderId]
+export const selectCreateOrderStatus = (state: RootState) => state.orders.createStatus

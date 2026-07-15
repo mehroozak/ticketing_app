@@ -32,6 +32,32 @@ export interface PublicEventListResponse {
   results: PublicEvent[]
 }
 
+export interface TicketTier {
+  id: number
+  name: string
+  description: string
+  price: string
+  quantity: number
+  max_per_person: number
+  sale_start: string | null
+  sale_end: string | null
+}
+
+export interface PublicEventDetail {
+  id: number
+  name: string
+  description: string
+  organization_name: string
+  categories: LookupMini[]
+  city: LookupMini | null
+  venue_name: string
+  address_text: string
+  start_datetime: string | null
+  end_datetime: string | null
+  banners: string[]
+  ticket_tiers: TicketTier[]
+}
+
 export interface AssignedEvent {
   id: number
   name: string

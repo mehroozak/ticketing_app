@@ -24,9 +24,16 @@ export type BottomTabParamList = {
 export type ExploreStackParamList = {
   ExploreScreen: undefined;          // passlay.com/events
   EventDetail: { id: string };       // passlay.com/events/:id
-  Checkout: { eventId: string; tierId: string };
+  Checkout: { eventId: string; eventName: string; items: CheckoutItem[] };
   Confirmation: { orderId: string };
 };
+
+export interface CheckoutItem {
+  tierId: number;
+  tierName: string;
+  unitPrice: number;
+  quantity: number;
+}
 
 // ── Queries stack ─────────────────────────────────────────────────────────────
 

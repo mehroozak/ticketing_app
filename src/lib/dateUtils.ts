@@ -30,3 +30,18 @@ export function displayDateTime(value: string | null | undefined): string {
     minute: '2-digit',
   }).format(new Date(value))
 }
+
+// Same `new Date()` parse as displayDateTime, split into a time-only string for
+// layouts that show date and time on separate lines.
+export function displayTime(value: string | null | undefined): string {
+  if (!value) return ''
+  return new Intl.DateTimeFormat('en', { hour: 'numeric', minute: '2-digit' }).format(new Date(value))
+}
+
+export function formatPrice(amount: string | number, currencyCode: string, locale: string): string {
+  const n = typeof amount === 'string' ? parseFloat(amount) : amount
+  if (n === 0) return 'Free'
+  return new Intl.NumberFormat(locale, { style: 'currency', currency: currencyCode, maximumFractionDigits: 0 }).format(
+    n,
+  )
+}

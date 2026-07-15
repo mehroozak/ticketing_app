@@ -10,3 +10,7 @@ export function parseQrPayload(raw: string): ParsedQrPayload | null {
   if (!ticketId || !eventId) return null
   return { ticketId, eventId }
 }
+
+export function buildQrPayload(ticketId: string, eventId: string | number): string {
+  return `${ticketId}:${eventId}`
+}

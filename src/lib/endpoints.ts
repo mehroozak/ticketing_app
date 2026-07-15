@@ -13,4 +13,5 @@ export const END_POINTS = {
   STAFF_ASSIGNED_EVENTS: '/api/events/staff-assigned/',
   EVENT_CHECKIN_TICKETS: (eventId: string | number) => `/api/orders/checkin-tickets/${eventId}/`,
   EVENT_CHECKIN_LOGS: (eventId: string | number) => `/api/orders/checkin-logs/${eventId}/`,
+  ENQUIRIES: '/api/enquiries/',
 }

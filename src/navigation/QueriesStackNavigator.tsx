@@ -5,6 +5,7 @@ import QueriesScreen from '../screens/queries/QueriesScreen'
 import EnquireArtistScreen from '../screens/queries/EnquireArtistScreen'
 import EnquireEventManagementScreen from '../screens/queries/EnquireEventManagementScreen'
 import ContactUsScreen from '../screens/queries/ContactUsScreen'
+import ContactSupportScreen from '../screens/queries/ContactSupportScreen'
 
 const Stack = createNativeStackNavigator<QueriesStackParamList>()
 
@@ -15,6 +16,7 @@ export default function QueriesStackNavigator() {
       <Stack.Screen name="EnquireArtist" component={EnquireArtistScreen} />
       <Stack.Screen name="EnquireEventManagement" component={EnquireEventManagementScreen} />
       <Stack.Screen name="ContactUs" component={ContactUsScreen} />
+      <Stack.Screen name="ContactSupport" component={ContactSupportScreen} />
     </Stack.Navigator>
   )
 }

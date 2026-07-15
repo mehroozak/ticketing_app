@@ -7,9 +7,9 @@ import { Text } from '../../components/ui/text'
 import EnquiryForm from '../../components/queries/EnquiryForm'
 import type { QueriesStackScreenProps } from '../../navigation/types'
 
-type Props = QueriesStackScreenProps<'EnquireArtist'>
+type Props = QueriesStackScreenProps<'ContactSupport'>
 
-export default function EnquireArtistScreen({ navigation }: Props) {
+export default function ContactSupportScreen({ navigation }: Props) {
   return (
     <SafeAreaView className="flex-1 bg-background" edges={['top']}>
       <View className="relative flex-row items-center justify-center px-12 py-3">
@@ -17,15 +17,15 @@ export default function EnquireArtistScreen({ navigation }: Props) {
           <Icon as={ChevronLeft} size={24} />
         </Pressable>
         <Text variant="h3" numberOfLines={1} className="text-center">
-          Enquire Artist
+          Contact Support
         </Text>
       </View>
 
       <ScrollView contentContainerClassName="px-4 py-4 gap-4" keyboardShouldPersistTaps="handled">
         <Text className="text-muted-foreground text-sm">
-          Tell us which artist you're interested in and we'll get back to you with availability and pricing.
+          Having an issue with an order or ticket? Let us know the details and we'll help sort it out.
         </Text>
-        <EnquiryForm enquiryType="artist" messagePlaceholder="What's the occasion, venue, and expected audience size?" />
+        <EnquiryForm enquiryType="contact_support" messagePlaceholder="What's going wrong?" />
       </ScrollView>
     </SafeAreaView>
   )

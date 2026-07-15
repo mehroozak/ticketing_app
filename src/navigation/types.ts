@@ -42,6 +42,7 @@ export type QueriesStackParamList = {
   EnquireArtist: undefined;
   EnquireEventManagement: undefined;
   ContactUs: undefined;
+  ContactSupport: undefined;
 };
 
 // ── Auth stack (Portal tab — not logged in) ───────────────────────────────────

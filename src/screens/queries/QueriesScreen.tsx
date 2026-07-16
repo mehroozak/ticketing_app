@@ -55,9 +55,9 @@ export default function QueriesScreen({ navigation }: Props) {
           <Pressable
             key={item.route}
             onPress={() => navigation.navigate(item.route)}
-            className="flex-row items-center gap-4 rounded-xl border border-border bg-card p-4"
+            className="flex-row items-center gap-4 rounded-xl border border-border bg-background p-4"
           >
-            <View className="size-11 items-center justify-center rounded-full bg-muted">
+            <View className="size-11 items-center justify-center rounded-full border border-border bg-background">
               <Icon as={item.icon} size={20} className="text-brand" />
             </View>
             <View className="flex-1">

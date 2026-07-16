@@ -23,7 +23,6 @@ function PhoneInput({
   placeholder = 'Phone number',
 }: PhoneInputProps) {
   const [country, setCountry] = React.useState<CountryCode>(DEFAULT_PHONE_COUNTRY);
-  const [isFocused, setIsFocused] = React.useState(false);
 
   // Keep the country selector in sync when an existing E.164 value is loaded from outside (e.g. editing a profile)
   React.useEffect(() => {
@@ -42,8 +41,7 @@ function PhoneInput({
   return (
     <View
       className={cn(
-        'dark:bg-input/30 border-input bg-background h-10 w-full min-w-0 flex-row items-center rounded-md border shadow-sm shadow-black/5 sm:h-9',
-        isFocused && 'border-brand',
+        'border-brand bg-background h-10 w-full min-w-0 flex-row items-center rounded-md border shadow-sm shadow-black/5 sm:h-9',
         invalid && 'border-destructive',
         disabled && 'opacity-50'
       )}>
@@ -72,11 +70,7 @@ function PhoneInput({
       <TextInput
         value={nationalDigits}
         onChangeText={(text) => emitChange(text.replace(/\D/g, ''), country)}
-        onFocus={() => setIsFocused(true)}
-        onBlur={() => {
-          setIsFocused(false);
-          onBlur?.();
-        }}
+        onBlur={onBlur}
         editable={!disabled}
         keyboardType="phone-pad"
         placeholder={placeholder}

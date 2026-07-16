@@ -48,7 +48,7 @@ function DatePicker({
         onPress={open}
         disabled={disabled}
         className={cn(
-          'dark:bg-input/30 border-input bg-background h-10 w-full min-w-0 flex-row items-center justify-between rounded-md border px-3 py-1 shadow-sm shadow-black/5 sm:h-9',
+          'border-brand bg-background h-10 w-full min-w-0 flex-row items-center justify-between rounded-md border px-3 py-1 shadow-sm shadow-black/5 sm:h-9',
           invalid && 'border-destructive',
           disabled && 'opacity-50'
         )}>

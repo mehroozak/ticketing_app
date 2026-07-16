@@ -81,7 +81,7 @@ export default function ExploreScreen({ navigation }: ExploreStackScreenProps<'E
   return (
     <View className="flex-1 bg-background">
       <SafeAreaView className="flex-1" edges={['top']}>
-        <View className="px-4 bg-background">
+        <View className="px-4 bg-background mb-4">
           <EventFilters values={filters} cities={cities} categories={categories} onChange={setFilters} />
         </View>
 

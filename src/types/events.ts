@@ -32,6 +32,11 @@ export interface PublicEventListResponse {
   results: PublicEvent[]
 }
 
+export interface UpcomingEventGroup {
+  date: string
+  events: PublicEvent[]
+}
+
 export interface TicketTier {
   id: number
   name: string

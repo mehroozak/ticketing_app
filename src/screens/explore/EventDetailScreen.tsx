@@ -85,7 +85,7 @@ export default function EventDetailScreen({ navigation, route }: Props) {
   return (
     <SafeAreaView className="flex-1 bg-background" edges={['top']}>
       <View className="relative flex-row items-center justify-center px-12 py-3">
-        <Pressable onPress={() => navigation.goBack()} hitSlop={12} className="absolute left-4">
+        <Pressable onPress={() => navigation.navigate('ExploreScreen')} hitSlop={12} className="absolute left-4">
           <Icon as={ChevronLeft} size={24} />
         </Pressable>
         <Text variant="h3" numberOfLines={1} className="text-center">

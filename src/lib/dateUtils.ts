@@ -18,6 +18,13 @@ export function displayDate(value: string | null | undefined): string {
   )
 }
 
+// Weekday + day + month, no year — for section headings grouping items by date (e.g. "Thursday, 16 July")
+export function displayDateHeading(value: string): string {
+  return new Intl.DateTimeFormat('en', { weekday: 'long', day: 'numeric', month: 'long' }).format(
+    parseISODateString(value),
+  )
+}
+
 // For real timestamps (not pure dates) — the API already serializes these with the
 // request's timezone offset embedded, so a plain `new Date()` parse is correct here.
 export function displayDateTime(value: string | null | undefined): string {

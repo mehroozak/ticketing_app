@@ -13,6 +13,7 @@
   "dependencies": {
     "@gorhom/bottom-sheet": "^5.2.14",
     "@hookform/resolvers": "^5.4.0",
+    "@kesha-antonov/react-native-chat": "^4.1.0",
     "@op-engineering/op-sqlite": "^17.1.2",
     "@react-native-async-storage/async-storage": "^3.1.1",
     "@react-native-community/datetimepicker": "^9.1.0",
@@ -38,6 +39,7 @@
     "react-native-config": "^1.6.1",
     "react-native-fbsdk-next": "^13.4.3",
     "react-native-gesture-handler": "^3.0.2",
+    "react-native-keyboard-controller": "^1.22.1",
     "react-native-keychain": "^10.0.0",
     "react-native-nitro-image": "^0.15.1",
     "react-native-nitro-modules": "^0.36.1",

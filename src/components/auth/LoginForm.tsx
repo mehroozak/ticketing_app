@@ -86,8 +86,12 @@ export default function LoginForm() {
         <View className="gap-1.5">
           <View className="flex-row items-center justify-between">
             <Text className="text-sm font-medium text-foreground">Password</Text>
-            {/* Not wired yet — no ForgotPassword screen exists in AuthStackParamList */}
-            <Text className="text-sm font-medium text-brand">Forgot password?</Text>
+            <Text
+              className="text-sm font-medium text-brand"
+              onPress={() => navigation.navigate('ForgotPassword')}
+            >
+              Forgot password?
+            </Text>
           </View>
           <Controller
             control={control}

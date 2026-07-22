@@ -7,6 +7,8 @@ import type { CompositeScreenProps, NavigatorScreenParams } from '@react-navigat
 
 export type RootStackParamList = {
   Main: NavigatorScreenParams<BottomTabParamList>;
+  // reachable via universal link (https://passlay.com/reset-password?uid=&token=) regardless of auth state
+  ResetPassword: { uid: string; token: string };
 };
 
 // ── Bottom tabs (4 tabs) ──────────────────────────────────────────────────────
@@ -50,6 +52,7 @@ export type QueriesStackParamList = {
 export type AuthStackParamList = {
   Login: undefined;
   Signup: undefined;
+  ForgotPassword: undefined;
 };
 
 // ── Portal drawer (Portal tab — logged in) ────────────────────────────────────

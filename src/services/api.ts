@@ -19,7 +19,7 @@ declare module 'axios' {
 }
 
 const BASE_URL = __DEV__
-  ? 'https://oqgtf-72-255-51-63.free.pinggy.net'
+  ? 'https://vyykh-119-63-138-236.run.pinggy-free.link'
   : 'https://api.passlay.com'
 
 

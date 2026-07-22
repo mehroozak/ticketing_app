@@ -1,6 +1,8 @@
 export const END_POINTS = {
   LOGIN: '/api/auth/login/',
   REGISTER: '/api/auth/register/',
+  FORGOT_PASSWORD: '/api/auth/forgot-password/',
+  RESET_PASSWORD: '/api/auth/reset-password/',
   ME: '/api/auth/me/',
   TOKEN_REFRESH: '/api/auth/token/refresh/',
   GOOGLE_AUTH: '/api/auth/google/',

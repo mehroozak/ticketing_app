@@ -5,6 +5,7 @@ import { formatPrice } from '../../lib/dateUtils'
 
 interface Props {
   subtotal: number
+  discount?: number
   platformFee: number
   processingFee: number
   tax: number
@@ -16,6 +17,7 @@ interface Props {
 
 export default function FeeBreakdown({
   subtotal,
+  discount = 0,
   platformFee,
   processingFee,
   tax,
@@ -30,6 +32,12 @@ export default function FeeBreakdown({
         <Text className="text-muted-foreground text-sm">Subtotal</Text>
         <Text className="text-foreground text-sm">{formatPrice(subtotal, currencyCode, locale)}</Text>
       </View>
+      {discount > 0 && (
+        <View className="flex-row justify-between">
+          <Text className="text-muted-foreground text-sm">Discount</Text>
+          <Text className="text-brand text-sm">-{formatPrice(discount, currencyCode, locale)}</Text>
+        </View>
+      )}
       {platformFee > 0 && (
         <View className="flex-row justify-between">
           <Text className="text-muted-foreground text-sm">Platform fee</Text>

@@ -36,6 +36,7 @@ export const fetchOrderDetail = createAsyncThunk('orders/fetchDetail', async (or
 export interface CreateOrderPayload {
   event: number
   items: { ticket_tier: number; quantity: number }[]
+  voucher_code?: string
 }
 
 export const createOrder = createAsyncThunk('orders/create', async (payload: CreateOrderPayload) => {

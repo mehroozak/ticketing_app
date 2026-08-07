@@ -41,7 +41,7 @@ export default function CheckoutScreen({ navigation, route }: Props) {
   const subtotal = items.reduce((s, i) => s + i.unitPrice * i.quantity, 0)
   const discountAmount = appliedVoucher?.discountAmount ?? 0
   const discountedSubtotal = subtotal - discountAmount
-  const platformFeeAmount = computeFee(platformFee, discountedSubtotal)
+  const platformFeeAmount = computeFee(platformFee, subtotal)
   const processingFeeAmount = computeFee(processingFeeDefault, discountedSubtotal)
   const taxAmount = computeFee({ type: 'percent', value: taxPercent }, discountedSubtotal)
   const totalAmount = discountedSubtotal + platformFeeAmount + processingFeeAmount + taxAmount

@@ -10,6 +10,7 @@ export interface Order {
   payment_status: PaymentStatus
   order_status: OrderStatus
   subtotal: string
+  discount_amount: string
   platform_fee_amount: string
   processing_fee_amount: string
   tax_amount: string
@@ -41,6 +42,7 @@ export interface OrderDetail {
   payment_status: PaymentStatus
   order_status: OrderStatus
   subtotal: string
+  discount_amount: string
   platform_fee_amount: string
   processing_fee_amount: string
   tax_amount: string

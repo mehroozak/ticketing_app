@@ -27,6 +27,7 @@ export default function ConfirmationScreen({ navigation, route }: Props) {
     if (!order) dispatch(fetchOrderDetail(Number(orderId)))
   }, [dispatch, orderId, order])
 
+  const discount = order ? parseFloat(order.discount_amount) : 0
   const platformFee = order ? parseFloat(order.platform_fee_amount) : 0
   const processingFee = order ? parseFloat(order.processing_fee_amount) : 0
   const tax = order ? parseFloat(order.tax_amount) : 0
@@ -60,6 +61,7 @@ export default function ConfirmationScreen({ navigation, route }: Props) {
 
             <FeeBreakdown
               subtotal={subtotal}
+              discount={discount}
               platformFee={platformFee}
               processingFee={processingFee}
               tax={tax}

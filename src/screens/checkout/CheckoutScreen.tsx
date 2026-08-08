@@ -5,9 +5,12 @@ import { SafeAreaView } from '../../components/ui/safe-area-view'
 import { Icon } from '../../components/ui/icon'
 import { Text } from '../../components/ui/text'
 import { Button } from '../../components/ui/button'
+import { Input } from '../../components/ui/input'
 import FeeBreakdown from '../../components/orders/FeeBreakdown'
 import { formatPrice } from '../../lib/dateUtils'
 import { computeFee } from '../../lib/feeUtils'
+import { END_POINTS } from '../../lib/endpoints'
+import { secureApi } from '../../services/api'
 import { useAppDispatch, useAppSelector } from '../../store/hooks'
 import { createOrder } from '../../store/slices/ordersSlice'
 import {
@@ -31,11 +34,37 @@ export default function CheckoutScreen({ navigation, route }: Props) {
   const taxPercent = useAppSelector(selectTaxPercent)
   const [isSubmitting, setIsSubmitting] = useState(false)
 
+  const [voucherCode, setVoucherCode] = useState('')
+  const [appliedVoucher, setAppliedVoucher] = useState<{ code: string; discountAmount: number } | null>(null)
+  const [applyingVoucher, setApplyingVoucher] = useState(false)
+
   const subtotal = items.reduce((s, i) => s + i.unitPrice * i.quantity, 0)
+  const discountAmount = appliedVoucher?.discountAmount ?? 0
+  const discountedSubtotal = subtotal - discountAmount
   const platformFeeAmount = computeFee(platformFee, subtotal)
-  const processingFeeAmount = computeFee(processingFeeDefault, subtotal)
-  const taxAmount = computeFee({ type: 'percent', value: taxPercent }, subtotal)
-  const totalAmount = subtotal + platformFeeAmount + processingFeeAmount + taxAmount
+  const processingFeeAmount = computeFee(processingFeeDefault, discountedSubtotal)
+  const taxAmount = computeFee({ type: 'percent', value: taxPercent }, discountedSubtotal)
+  const totalAmount = discountedSubtotal + platformFeeAmount + processingFeeAmount + taxAmount
+
+  async function handleApplyVoucher() {
+    if (!voucherCode.trim()) return
+    setApplyingVoucher(true)
+    try {
+      const res = await secureApi.post<{ data: { discount_amount: string } }>(END_POINTS.VOUCHER_VALIDATE, {
+        code: voucherCode,
+        event: Number(eventId),
+        items: items.map((i) => ({ ticket_tier: i.tierId, quantity: i.quantity })),
+      })
+      setAppliedVoucher({ code: voucherCode.toUpperCase(), discountAmount: parseFloat(res.data.data.discount_amount) })
+    } finally {
+      setApplyingVoucher(false)
+    }
+  }
+
+  function handleRemoveVoucher() {
+    setAppliedVoucher(null)
+    setVoucherCode('')
+  }
 
   async function handleConfirm() {
     setIsSubmitting(true)
@@ -44,6 +73,7 @@ export default function CheckoutScreen({ navigation, route }: Props) {
         createOrder({
           event: Number(eventId),
           items: items.map((i) => ({ ticket_tier: i.tierId, quantity: i.quantity })),
+          voucher_code: appliedVoucher?.code,
         }),
       ).unwrap()
       navigation.replace('Confirmation', { orderId: String(order.id) })
@@ -79,8 +109,35 @@ export default function CheckoutScreen({ navigation, route }: Props) {
           ))}
         </View>
 
+        {appliedVoucher ? (
+          <View className="flex-row items-center justify-between bg-brand/10 rounded-lg px-3 py-2.5">
+            <Text className="text-foreground text-sm font-medium">Voucher "{appliedVoucher.code}" applied</Text>
+            <Pressable onPress={handleRemoveVoucher} hitSlop={8}>
+              <Text className="text-muted-foreground text-xs uppercase tracking-wide">Remove</Text>
+            </Pressable>
+          </View>
+        ) : (
+          <View className="flex-row gap-2">
+            <Input
+              placeholder="Voucher code"
+              value={voucherCode}
+              onChangeText={setVoucherCode}
+              autoCapitalize="characters"
+              className="flex-1"
+            />
+            <Button
+              variant="outline"
+              onPress={handleApplyVoucher}
+              disabled={applyingVoucher || !voucherCode.trim()}
+            >
+              <Text>{applyingVoucher ? 'Applying…' : 'Apply'}</Text>
+            </Button>
+          </View>
+        )}
+
         <FeeBreakdown
           subtotal={subtotal}
+          discount={discountAmount}
           platformFee={platformFeeAmount}
           processingFee={processingFeeAmount}
           tax={taxAmount}

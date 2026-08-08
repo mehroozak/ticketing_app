@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from 'react'
 import { StatusBar, View } from 'react-native'
 import { SafeAreaProvider } from 'react-native-safe-area-context'
-import { NavigationContainer } from '@react-navigation/native'
+import { NavigationContainer, type LinkingOptions } from '@react-navigation/native'
+import type { RootStackParamList } from './types'
 import { useColorScheme as useNativeWindColorScheme } from 'nativewind'
 import Toast from 'react-native-toast-message'
 import { PortalHost } from '@rn-primitives/portal'
@@ -16,6 +17,25 @@ import { ensureDeviceId } from '../store/slices/checkinSlice'
 import { NAV_THEME } from '../lib/nav-theme'
 import RootNavigator from './RootNavigator'
 import AnimatedSplash from '../components/AnimatedSplash'
+
+const linking: LinkingOptions<RootStackParamList> = {
+  prefixes: ['https://passlay.com'],
+  config: {
+    screens: {
+      Main: {
+        screens: {
+          Explore: {
+            screens: {
+              ExploreScreen: 'events',
+              EventDetail: 'events/:id',
+            },
+          },
+        },
+      },
+      ResetPassword: 'reset-password',
+    },
+  },
+}
 
 export default function AppRoot() {
   const dispatch = useAppDispatch()
@@ -54,7 +74,10 @@ export default function AppRoot() {
     <View className={isDark ? 'dark flex-1' : 'flex-1'}>
       <SafeAreaProvider>
         <StatusBar barStyle={isDark ? 'light-content' : 'dark-content'} />
-        <NavigationContainer theme={isDark ? NAV_THEME.dark : NAV_THEME.light}>
+        <NavigationContainer
+          theme={isDark ? NAV_THEME.dark : NAV_THEME.light}
+          linking={linking}
+        >
           <RootNavigator />
         </NavigationContainer>
         <Toast position='top'/>

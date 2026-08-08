@@ -63,8 +63,6 @@
 	</dict>
 	<key>NSCameraUsageDescription</key>
 	<string>Used to scan ticket QR codes at event check-in.</string>
-	<key>NSLocationWhenInUseUsageDescription</key>
-	<string></string>
 	<key>RCTNewArchEnabled</key>
 	<true/>
 	<key>UILaunchStoryboardName</key>

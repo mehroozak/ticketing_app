@@ -1,7 +1,7 @@
-import React, { useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import { ScrollView, View, useWindowDimensions } from 'react-native'
 import type { NativeScrollEvent, NativeSyntheticEvent } from 'react-native'
-import PublicEventCard from '../explore/PublicEventCard'
+import HappeningTodayCard from './HappeningTodayCard'
 import type { PublicEvent } from '../../types/events'
 
 interface Props {
@@ -9,9 +9,27 @@ interface Props {
   onPressEvent: (event: PublicEvent) => void
 }
 
-export default function FeaturedCarousel({ events, onPressEvent }: Props) {
+const AUTO_ADVANCE_MS = 4000
+
+export default function HappeningTodayCarousel({ events, onPressEvent }: Props) {
   const { width } = useWindowDimensions()
   const [activeIndex, setActiveIndex] = useState(0)
+  const scrollRef = useRef<ScrollView>(null)
+  const indexRef = useRef(0)
+
+  useEffect(() => {
+    indexRef.current = activeIndex
+  }, [activeIndex])
+
+  useEffect(() => {
+    if (events.length < 2) return
+    const id = setInterval(() => {
+      const next = (indexRef.current + 1) % events.length
+      scrollRef.current?.scrollTo({ x: next * width, animated: true })
+      setActiveIndex(next)
+    }, AUTO_ADVANCE_MS)
+    return () => clearInterval(id)
+  }, [events.length, width])
 
   if (events.length === 0) return null
 
@@ -23,6 +41,7 @@ export default function FeaturedCarousel({ events, onPressEvent }: Props) {
   return (
     <View className="gap-2">
       <ScrollView
+        ref={scrollRef}
         horizontal
         pagingEnabled
         showsHorizontalScrollIndicator={false}
@@ -31,7 +50,7 @@ export default function FeaturedCarousel({ events, onPressEvent }: Props) {
       >
         {events.map((event) => (
           <View key={event.id} style={{ width }} className="px-4">
-            <PublicEventCard event={event} onPress={() => onPressEvent(event)} />
+            <HappeningTodayCard event={event} onPress={() => onPressEvent(event)} />
           </View>
         ))}
       </ScrollView>

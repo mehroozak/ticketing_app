@@ -25,6 +25,14 @@ export function displayDateHeading(value: string): string {
   )
 }
 
+// Day + short month, no year, uppercased — for compact date badges (e.g. "18 AUG")
+export function displayDayMonth(value: string | null | undefined): string {
+  if (!value) return ''
+  return new Intl.DateTimeFormat('en', { day: 'numeric', month: 'short' })
+    .format(parseISODateString(value))
+    .toUpperCase()
+}
+
 // For real timestamps (not pure dates) — the API already serializes these with the
 // request's timezone offset embedded, so a plain `new Date()` parse is correct here.
 export function displayDateTime(value: string | null | undefined): string {

@@ -21,15 +21,21 @@ import AnimatedSplash from '../components/AnimatedSplash'
 const linking: LinkingOptions<RootStackParamList> = {
   prefixes: ['https://passlay.com'],
   config: {
+    initialRouteName: 'Main',
     screens: {
       Main: {
+        initialRouteName: 'Home',
         screens: {
+          // `LinkingOptions`'s generic typing loses proper inference past two levels
+          // of nesting, so `initialRouteName` here type-checks against `undefined`
+          // even though it's a valid, documented option — asserted to bypass that.
           Explore: {
+            initialRouteName: 'ExploreScreen',
             screens: {
               ExploreScreen: 'events',
               EventDetail: 'events/:id',
             },
-          },
+          } as any,
         },
       },
       ResetPassword: 'reset-password',

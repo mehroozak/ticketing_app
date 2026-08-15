@@ -34,6 +34,8 @@ const linking: LinkingOptions<RootStackParamList> = {
             screens: {
               ExploreScreen: 'events',
               EventDetail: 'events/:id',
+              Organizers: 'organizers',
+              OrganizerProfile: 'organizers/:slug',
             },
           } as any,
         },

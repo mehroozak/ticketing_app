@@ -33,7 +33,7 @@ export default function OrderItemsList({ items, eventId, currencyCode, locale }:
           <View className="gap-4">
             {item.tickets.map((ticket, idx) => (
               <View key={ticket.id} className="items-center gap-3 rounded-2xl border border-border bg-card p-6">
-                <QRCode value={buildQrPayload(ticket.qr_code, eventId)} size={qrSize} />
+                <QRCode value={buildQrPayload(ticket.qr_code, eventId)} size={qrSize} quietZone={16} />
                 <Text className="text-foreground text-sm font-medium">Ticket {idx + 1}</Text>
                 <View className={`px-2.5 py-1 rounded-full ${TICKET_STATUS_STYLES[ticket.status]}`}>
                   <Text className="text-xs font-medium">{ticket.status}</Text>

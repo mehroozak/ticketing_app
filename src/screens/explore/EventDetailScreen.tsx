@@ -110,9 +110,13 @@ export default function EventDetailScreen({ navigation, route }: Props) {
 
             <View className="px-4 gap-4 mt-4">
               <View>
-                <Text className="text-muted-foreground text-xs uppercase tracking-widest">
-                  {event.organization_name}
-                </Text>
+                <Pressable
+                  onPress={() => navigation.navigate('OrganizerProfile', { slug: event.organization_slug })}
+                >
+                  <Text className="text-brand text-xs uppercase tracking-widest">
+                    {event.organization_name}
+                  </Text>
+                </Pressable>
                 <Text variant="h2" className="mt-1">
                   {event.name}
                 </Text>

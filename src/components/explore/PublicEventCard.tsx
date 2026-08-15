@@ -9,9 +9,10 @@ import type { PublicEvent } from '../../types/events'
 interface Props {
   event: PublicEvent
   onPress: () => void
+  isPast?: boolean
 }
 
-export default function PublicEventCard({ event, onPress }: Props) {
+export default function PublicEventCard({ event, onPress, isPast = false }: Props) {
   const banner = event.banners[0]
   const category = event.categories[0]
 
@@ -81,10 +82,12 @@ export default function PublicEventCard({ event, onPress }: Props) {
             )}
           </View>
 
-          <View className="h-11 flex-row items-center justify-between rounded-full bg-brand px-5">
-            <Text className="text-sm font-bold uppercase tracking-widest text-background">Book Pass</Text>
-            <Icon as={ChevronRight} size={16} className="text-background" />
-          </View>
+          {!isPast && (
+            <View className="h-11 flex-row items-center justify-between rounded-full bg-brand px-5">
+              <Text className="text-sm font-bold uppercase tracking-widest text-background">Book Pass</Text>
+              <Icon as={ChevronRight} size={16} className="text-background" />
+            </View>
+          )}
         </View>
       </View>
     </Pressable>

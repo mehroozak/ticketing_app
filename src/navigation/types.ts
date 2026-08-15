@@ -26,6 +26,8 @@ export type BottomTabParamList = {
 export type ExploreStackParamList = {
   ExploreScreen: undefined;          // passlay.com/events
   EventDetail: { id: string };       // passlay.com/events/:id
+  Organizers: undefined;             // passlay.com/organizers
+  OrganizerProfile: { slug: string }; // passlay.com/organizers/:slug
   Checkout: { eventId: string; eventName: string; items: CheckoutItem[] };
   Confirmation: { orderId: string };
 };

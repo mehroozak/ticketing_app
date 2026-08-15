@@ -16,6 +16,7 @@ export interface PublicEvent {
   name: string
   description: string
   organization_name: string
+  organization_slug: string
   categories: LookupMini[]
   city: LookupMini | null
   venue_name: string
@@ -53,6 +54,7 @@ export interface PublicEventDetail {
   name: string
   description: string
   organization_name: string
+  organization_slug: string
   categories: LookupMini[]
   city: LookupMini | null
   venue_name: string
@@ -61,6 +63,30 @@ export interface PublicEventDetail {
   end_datetime: string | null
   banners: string[]
   ticket_tiers: TicketTier[]
+}
+
+export interface PublicOrganizer {
+  id: number
+  slug: string
+  organization_name: string
+  logo: string | null
+  city: string
+  events_hosted: number
+}
+
+export interface PublicOrganizerListResponse {
+  count: number
+  next: string | null
+  previous: string | null
+  results: PublicOrganizer[]
+}
+
+export interface PublicOrganizerDetail extends PublicOrganizer {
+  description: string
+  organizing_since: number
+  total_tickets_sold: number
+  previous_events: PublicEvent[]
+  upcoming_events: PublicEvent[]
 }
 
 export interface AssignedEvent {

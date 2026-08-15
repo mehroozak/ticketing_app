@@ -14,6 +14,8 @@ export const END_POINTS = {
   PUBLIC_EVENTS_UPCOMING: '/api/events/public/upcoming/',
   PUBLIC_EVENTS_HAPPENING: '/api/events/public/happening/',
   PUBLIC_EVENT_DETAIL: (eventId: string | number) => `/api/events/public/${eventId}/`,
+  PUBLIC_ORGANIZERS: '/api/organization/public/',
+  PUBLIC_ORGANIZER_DETAIL: (slug: string) => `/api/organization/public/${slug}/`,
   STAFF_ASSIGNED_EVENTS: '/api/events/staff-assigned/',
   EVENT_CHECKIN_TICKETS: (eventId: string | number) => `/api/orders/checkin-tickets/${eventId}/`,
   EVENT_CHECKIN_LOGS: (eventId: string | number) => `/api/orders/checkin-logs/${eventId}/`,

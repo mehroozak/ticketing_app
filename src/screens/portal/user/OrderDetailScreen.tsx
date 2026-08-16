@@ -4,7 +4,6 @@ import { ChevronLeft } from 'lucide-react-native'
 import { SafeAreaView } from '../../../components/ui/safe-area-view'
 import { Icon } from '../../../components/ui/icon'
 import { Text } from '../../../components/ui/text'
-import FeeBreakdown from '../../../components/orders/FeeBreakdown'
 import OrderItemsList from '../../../components/orders/OrderItemsList'
 import { useAppDispatch, useAppSelector } from '../../../store/hooks'
 import { fetchOrderDetail, selectOrderDetail, selectOrderDetailStatus } from '../../../store/slices/ordersSlice'
@@ -32,13 +31,6 @@ export default function OrderDetailScreen({ navigation, route }: Props) {
     dispatch(fetchOrderDetail(Number(orderId)))
   }, [dispatch, orderId])
 
-  const discount = order ? parseFloat(order.discount_amount) : 0
-  const platformFee = order ? parseFloat(order.platform_fee_amount) : 0
-  const processingFee = order ? parseFloat(order.processing_fee_amount) : 0
-  const tax = order ? parseFloat(order.tax_amount) : 0
-  const subtotal = order ? parseFloat(order.subtotal) : 0
-  const total = order ? parseFloat(order.total_amount) : 0
-
   return (
     <SafeAreaView className="flex-1 bg-background" edges={['top']}>
       <View className="relative flex-row items-center justify-center px-12 py-3">
@@ -65,18 +57,6 @@ export default function OrderDetailScreen({ navigation, route }: Props) {
           </Text>
 
           <OrderItemsList items={order.items} eventId={order.event} currencyCode={currencyCode} locale={locale} />
-
-          <FeeBreakdown
-            subtotal={subtotal}
-            discount={discount}
-            platformFee={platformFee}
-            processingFee={processingFee}
-            tax={tax}
-            total={total}
-            currencyCode={currencyCode}
-            locale={locale}
-            totalLabel="Total Paid"
-          />
         </ScrollView>
       )}
     </SafeAreaView>

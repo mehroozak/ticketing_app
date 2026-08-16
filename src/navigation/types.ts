@@ -80,6 +80,7 @@ export type StaffStackParamList = {
   AssignedEvents: undefined;
   EventCheckin: { eventId: string; eventName: string };
   Scanner: { eventId: string; eventName: string };
+  WalkInSale: { eventId: string; eventName: string };
 };
 
 // ── Typed screen props ────────────────────────────────────────────────────────

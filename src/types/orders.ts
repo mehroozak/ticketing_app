@@ -50,3 +50,12 @@ export interface OrderDetail {
   items: OrderItem[]
   created_at: string
 }
+
+export type PaymentMethod = 'online' | 'cash' | 'card_pos'
+
+export interface WalkInOrderDetail extends OrderDetail {
+  payment_method: PaymentMethod
+  customer_email: string
+  customer_name: string
+  sold_by_name: string | null
+}

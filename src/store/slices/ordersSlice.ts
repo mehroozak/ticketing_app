@@ -1,7 +1,7 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
 import { secureApi } from '../../services/api'
 import { END_POINTS } from '../../lib/endpoints'
-import type { Order, OrderDetail } from '../../types/orders'
+import type { Order, OrderDetail, PaymentMethod, WalkInOrderDetail } from '../../types/orders'
 import type { RootState } from '../index'
 import { logout } from './authSlice'
 
@@ -44,6 +44,23 @@ export const createOrder = createAsyncThunk('orders/create', async (payload: Cre
   return res.data.data
 })
 
+export interface CreateWalkInOrderPayload {
+  eventId: string
+  items: { ticket_tier: number; quantity: number }[]
+  customer_email: string
+  customer_phone?: string
+  payment_method: Exclude<PaymentMethod, 'online'>
+  voucher_code?: string
+}
+
+export const createWalkInOrder = createAsyncThunk(
+  'orders/createWalkIn',
+  async ({ eventId, ...body }: CreateWalkInOrderPayload) => {
+    const res = await secureApi.post<{ data: WalkInOrderDetail }>(END_POINTS.EVENT_WALKIN_ORDER_CREATE(eventId), body)
+    return res.data.data
+  },
+)
+
 const ordersSlice = createSlice({
   name: 'orders',
   initialState,
@@ -78,6 +95,16 @@ const ordersSlice = createSlice({
         state.detailsById[action.payload.id] = action.payload
       })
       .addCase(createOrder.rejected, (state) => {
+        state.createStatus = 'failed'
+      })
+      .addCase(createWalkInOrder.pending, (state) => {
+        state.createStatus = 'loading'
+      })
+      .addCase(createWalkInOrder.fulfilled, (state, action) => {
+        state.createStatus = 'succeeded'
+        state.detailsById[action.payload.id] = action.payload
+      })
+      .addCase(createWalkInOrder.rejected, (state) => {
         state.createStatus = 'failed'
       })
       .addCase(logout, () => initialState)

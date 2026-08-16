@@ -101,6 +101,10 @@ export default function EventCheckinScreen({ navigation, route }: Props) {
         <Button onPress={() => navigation.navigate('Scanner', { eventId, eventName })}>
           <Text>Scan</Text>
         </Button>
+
+        <Button variant="outline" onPress={() => navigation.navigate('WalkInSale', { eventId, eventName })}>
+          <Text>Sell Walk-In Ticket</Text>
+        </Button>
       </ScrollView>
     </SafeAreaView>
   )

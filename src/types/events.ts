@@ -49,6 +49,13 @@ export interface TicketTier {
   sale_end: string | null
 }
 
+// Staff/organizer-scoped tier shape (GET /api/events/<id>/tiers/) — unlike the public
+// tier list, this includes inactive tiers and the is_active flag itself.
+export interface StaffTicketTier extends TicketTier {
+  is_active: boolean
+  order: number
+}
+
 export interface PublicEventDetail {
   id: number
   name: string

@@ -1,5 +1,5 @@
 import React, { useCallback, useMemo, useRef, useState } from 'react'
-import { Pressable, View } from 'react-native'
+import { Image, Pressable, View } from 'react-native'
 import BottomSheet, { BottomSheetBackdrop, BottomSheetView, type BottomSheetBackdropProps } from '@gorhom/bottom-sheet'
 import { ChevronUp, Sparkles } from 'lucide-react-native'
 import { Icon } from '../ui/icon'
@@ -50,8 +50,12 @@ export default function AgentSheet() {
             </Pressable>
           )}
 
-          <View className="flex-1 items-center justify-center gap-2 px-6">
-            <Text className="text-foreground text-lg font-semibold">Coming soon</Text>
+          <View className="flex-1 items-center justify-center gap-3 px-6">
+            <Image
+              source={require('../../../assets/ruko-jara.jpg')}
+              className="w-48 h-48 rounded-2xl"
+              resizeMode="cover"
+            />
             <Text className="text-muted-foreground text-sm text-center">
               Your AI event assistant is on the way.
             </Text>

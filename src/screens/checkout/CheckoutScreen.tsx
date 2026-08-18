@@ -25,7 +25,7 @@ import type { ExploreStackScreenProps } from '../../navigation/types'
 type Props = ExploreStackScreenProps<'Checkout'>
 
 export default function CheckoutScreen({ navigation, route }: Props) {
-  const { eventId, eventName, items } = route.params
+  const { eventId, eventName, items, organizationSlug, hasRefundPolicy } = route.params
   const dispatch = useAppDispatch()
   const currencyCode = useAppSelector(selectCurrencyCode)
   const locale = useAppSelector(selectLocale)
@@ -145,6 +145,14 @@ export default function CheckoutScreen({ navigation, route }: Props) {
           currencyCode={currencyCode}
           locale={locale}
         />
+
+        {hasRefundPolicy && (
+          <Pressable onPress={() => navigation.navigate('OrganizerProfile', { slug: organizationSlug })}>
+            <Text className="text-muted-foreground text-xs">
+              By purchasing you agree to the organizer's <Text className="text-brand text-xs">refund policy</Text>.
+            </Text>
+          </Pressable>
+        )}
       </ScrollView>
 
       <View className="border-t border-border px-4 py-3">

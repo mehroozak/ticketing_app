@@ -79,7 +79,13 @@ export default function EventDetailScreen({ navigation, route }: Props) {
         unitPrice: parseFloat(t.price),
         quantity: quantities[t.id],
       }))
-    navigation.navigate('Checkout', { eventId: String(event.id), eventName: event.name, items })
+    navigation.navigate('Checkout', {
+      eventId: String(event.id),
+      eventName: event.name,
+      items,
+      organizationSlug: event.organization_slug,
+      hasRefundPolicy: event.organization_has_refund_policy,
+    })
   }
 
   return (
@@ -183,6 +189,16 @@ export default function EventDetailScreen({ navigation, route }: Props) {
                   ))
                 )}
               </View>
+
+              {event.organization_has_refund_policy && (
+                <Pressable
+                  onPress={() => navigation.navigate('OrganizerProfile', { slug: event.organization_slug })}
+                >
+                  <Text className="text-muted-foreground text-xs text-center">
+                    See {event.organization_name}'s <Text className="text-brand text-xs">refund policy</Text>.
+                  </Text>
+                </Pressable>
+              )}
             </View>
           </ScrollView>
 

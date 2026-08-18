@@ -97,6 +97,25 @@ export default function OrganizerProfileScreen({ navigation, route }: Props) {
               ))}
             </View>
           )}
+
+          {organizer.refund_policy && (
+            <View className="gap-3">
+              <Text variant="h3">Refund Policy</Text>
+              <Text className="text-muted-foreground text-sm leading-relaxed">
+                {organizer.refund_policy.policy_text}
+              </Text>
+              {(organizer.refund_policy.contact_email || organizer.refund_policy.contact_phone) && (
+                <View className="gap-1">
+                  {organizer.refund_policy.contact_email ? (
+                    <Text className="text-muted-foreground text-sm">{organizer.refund_policy.contact_email}</Text>
+                  ) : null}
+                  {organizer.refund_policy.contact_phone ? (
+                    <Text className="text-muted-foreground text-sm">{organizer.refund_policy.contact_phone}</Text>
+                  ) : null}
+                </View>
+              )}
+            </View>
+          )}
         </ScrollView>
       )}
     </SafeAreaView>

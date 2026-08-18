@@ -62,6 +62,7 @@ export interface PublicEventDetail {
   description: string
   organization_name: string
   organization_slug: string
+  organization_has_refund_policy: boolean
   categories: LookupMini[]
   city: LookupMini | null
   venue_name: string
@@ -94,6 +95,7 @@ export interface PublicOrganizerDetail extends PublicOrganizer {
   total_tickets_sold: number
   previous_events: PublicEvent[]
   upcoming_events: PublicEvent[]
+  refund_policy: { policy_text: string; contact_email: string; contact_phone: string } | null
 }
 
 export interface AssignedEvent {

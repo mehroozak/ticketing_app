@@ -28,7 +28,13 @@ export type ExploreStackParamList = {
   EventDetail: { id: string };       // passlay.com/events/:id
   Organizers: undefined;             // passlay.com/organizers
   OrganizerProfile: { slug: string }; // passlay.com/organizers/:slug
-  Checkout: { eventId: string; eventName: string; items: CheckoutItem[] };
+  Checkout: {
+    eventId: string;
+    eventName: string;
+    items: CheckoutItem[];
+    organizationSlug: string;
+    hasRefundPolicy: boolean;
+  };
   Confirmation: { orderId: string };
 };
 

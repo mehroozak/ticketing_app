@@ -9,37 +9,30 @@ export interface FeeConfig {
   label?: string
 }
 
-export interface ProcessingFees {
-  raast_qr: number
-  raast_rtp: number
-  bank_account: number
-  wallet: number
-  card_local: number
-  card_international: number
-}
-
 export interface AppConfig {
   platform_fee?: FeeConfig
   processing_fee_default?: FeeConfig
   tax_percent?: number
-  processing_fees?: ProcessingFees
   [key: string]: unknown
 }
 
+// Fees vary by country, so /api/settings/ returns one config per country code.
+export type AppConfigByCountry = Record<string, AppConfig>
+
 interface SettingsState {
-  config: AppConfig | null
+  configByCountry: AppConfigByCountry | null
   selectedCountryCode: string
   status: 'idle' | 'loading' | 'succeeded' | 'failed'
 }
 
 const initialState: SettingsState = {
-  config: null,
+  configByCountry: null,
   selectedCountryCode: 'PK',
   status: 'idle',
 }
 
 export const fetchAppConfig = createAsyncThunk('settings/fetchConfig', async () => {
-  const res = await publicApi.get<{ data: AppConfig }>('/api/settings/')
+  const res = await publicApi.get<{ data: AppConfigByCountry }>('/api/settings/')
   return res.data.data
 })
 
@@ -58,7 +51,7 @@ const settingsSlice = createSlice({
       })
       .addCase(fetchAppConfig.fulfilled, (state, action) => {
         state.status = 'succeeded'
-        state.config = action.payload
+        state.configByCountry = action.payload
       })
       .addCase(fetchAppConfig.rejected, (state) => {
         state.status = 'failed'
@@ -69,7 +62,12 @@ const settingsSlice = createSlice({
 export const { setCountry } = settingsSlice.actions
 export default settingsSlice.reducer
 
-export const selectAppConfig = (state: RootState) => state.settings.config
+// Falls back to the first configured country, mirroring selectSelectedCountry.
+export const selectAppConfig = (state: RootState): AppConfig | null => {
+  const byCountry = state.settings.configByCountry
+  if (!byCountry) return null
+  return byCountry[state.settings.selectedCountryCode] ?? Object.values(byCountry)[0] ?? null
+}
 export const selectSelectedCountryCode = (state: RootState) => state.settings.selectedCountryCode
 export const selectSettingsStatus = (state: RootState) => state.settings.status
 
@@ -107,10 +105,21 @@ export const selectActiveCities = (state: RootState): LookupItem[] => {
 }
 
 export const selectPlatformFee = (state: RootState): FeeConfig | null =>
-  state.settings.config?.platform_fee ?? null
+  selectAppConfig(state)?.platform_fee ?? null
 
 export const selectProcessingFeeDefault = (state: RootState): FeeConfig | null =>
-  state.settings.config?.processing_fee_default ?? null
+  selectAppConfig(state)?.processing_fee_default ?? null
 
 export const selectTaxPercent = (state: RootState): number =>
-  state.settings.config?.tax_percent ?? 0
+  selectAppConfig(state)?.tax_percent ?? 0
+
+// Matches the web app's default FRONTEND_URL-based path — used only if a country has no
+// CountryConfig at all, so the app never ends up with nothing to match against.
+const DEFAULT_CHECKOUT_SUCCESS_URL = 'https://passlay.com/checkout/success'
+const DEFAULT_CHECKOUT_FAILURE_URL = 'https://passlay.com/checkout/failure'
+
+export const selectCheckoutSuccessUrl = (state: RootState): string =>
+  (selectAppConfig(state)?.success_url as string) || DEFAULT_CHECKOUT_SUCCESS_URL
+
+export const selectCheckoutFailureUrl = (state: RootState): string =>
+  (selectAppConfig(state)?.failure_url as string) || DEFAULT_CHECKOUT_FAILURE_URL

@@ -64,7 +64,11 @@ export const createWalkInOrder = createAsyncThunk(
 const ordersSlice = createSlice({
   name: 'orders',
   initialState,
-  reducers: {},
+  reducers: {
+    clearOrders() {
+      return initialState
+    },
+  },
   extraReducers: (builder) => {
     builder
       .addCase(fetchOrders.pending, (state) => {
@@ -111,6 +115,7 @@ const ordersSlice = createSlice({
   },
 })
 
+export const { clearOrders } = ordersSlice.actions
 export default ordersSlice.reducer
 
 export const selectOrders = (state: RootState) => state.orders.orders

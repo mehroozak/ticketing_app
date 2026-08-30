@@ -35,6 +35,12 @@ export interface OrderItem {
   tickets: Ticket[]
 }
 
+export interface GatewayCheckout {
+  basket_id: string
+  post_url: string
+  fields: Record<string, string>
+}
+
 export interface OrderDetail {
   id: number
   event: number
@@ -49,6 +55,7 @@ export interface OrderDetail {
   total_amount: string
   items: OrderItem[]
   created_at: string
+  payment?: GatewayCheckout | null
 }
 
 export type PaymentMethod = 'online' | 'cash' | 'card_pos'

@@ -7,6 +7,8 @@ import OrganizersScreen from '../screens/explore/OrganizersScreen'
 import OrganizerProfileScreen from '../screens/explore/OrganizerProfileScreen'
 import CheckoutScreen from '../screens/checkout/CheckoutScreen'
 import ConfirmationScreen from '../screens/checkout/ConfirmationScreen'
+import PaymentCheckoutScreen from '../screens/checkout/PaymentCheckoutScreen'
+import PaymentFailureScreen from '../screens/checkout/PaymentFailureScreen'
 
 const Stack = createNativeStackNavigator<ExploreStackParamList>()
 
@@ -19,6 +21,8 @@ export default function ExploreStackNavigator() {
       <Stack.Screen name="OrganizerProfile" component={OrganizerProfileScreen} />
       <Stack.Screen name="Checkout" component={CheckoutScreen} />
       <Stack.Screen name="Confirmation" component={ConfirmationScreen} />
+      <Stack.Screen name="PaymentCheckout" component={PaymentCheckoutScreen} />
+      <Stack.Screen name="PaymentFailure" component={PaymentFailureScreen} />
     </Stack.Navigator>
   )
 }

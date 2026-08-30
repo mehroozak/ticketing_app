@@ -24,7 +24,7 @@ import type { PublicEventDetail } from '../../types/events'
 type Props = ExploreStackScreenProps<'EventDetail'>
 
 export default function EventDetailScreen({ navigation, route }: Props) {
-  const { id } = route.params
+  const { id, resetCart } = route.params
   const isAuthenticated = useAppSelector(selectIsAuthenticated)
   const currencyCode = useAppSelector(selectCurrencyCode)
   const locale = useAppSelector(selectLocale)
@@ -48,6 +48,16 @@ export default function EventDetailScreen({ navigation, route }: Props) {
   useEffect(() => {
     getEvent()
   }, [getEvent])
+
+  // This screen stays mounted underneath the whole checkout flow (Checkout/PaymentCheckout
+  // get replaced, never pushed on top and popped back through), so a completed purchase
+  // can't rely on remounting to clear the old selection — consume the one-shot flag instead.
+  useEffect(() => {
+    if (resetCart) {
+      setQuantities({})
+      navigation.setParams({ resetCart: undefined })
+    }
+  }, [resetCart, navigation])
 
   function changeQuantity(tierId: number, delta: number, max: number) {
     setQuantities((prev) => {

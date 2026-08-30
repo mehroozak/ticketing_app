@@ -1,19 +1,21 @@
 import React, { useEffect } from 'react'
 import { ActivityIndicator, ScrollView, View } from 'react-native'
-import { CircleCheck } from 'lucide-react-native'
+import { Mail } from 'lucide-react-native'
 import { SafeAreaView } from '../../components/ui/safe-area-view'
 import { Icon } from '../../components/ui/icon'
 import { Text } from '../../components/ui/text'
 import { Button } from '../../components/ui/button'
 import FeeBreakdown from '../../components/orders/FeeBreakdown'
-import OrderItemsList from '../../components/orders/OrderItemsList'
 import { useAppDispatch, useAppSelector } from '../../store/hooks'
-import { fetchOrderDetail, selectOrderDetail } from '../../store/slices/ordersSlice'
+import { clearOrders, fetchOrderDetail, selectOrderDetail } from '../../store/slices/ordersSlice'
 import { selectCurrencyCode, selectLocale } from '../../store/slices/settingsSlice'
 import type { ExploreStackScreenProps } from '../../navigation/types'
 
 type Props = ExploreStackScreenProps<'Confirmation'>
 
+// No ticket display here — the IPN can take a few minutes to settle, and tickets only
+// exist once it does. Point the customer at My Tickets instead of gating this screen on
+// payment status.
 export default function ConfirmationScreen({ navigation, route }: Props) {
   const { orderId } = route.params
   const dispatch = useAppDispatch()
@@ -34,8 +36,15 @@ export default function ConfirmationScreen({ navigation, route }: Props) {
   const subtotal = order ? parseFloat(order.subtotal) : 0
   const total = order ? parseFloat(order.total_amount) : 0
 
+  function handleMyTickets() {
+    dispatch(clearOrders())
+    navigation.navigate('Portal')
+  }
+
   function handleDone() {
-    navigation.popToTop()
+    if (!order) return
+    dispatch(clearOrders())
+    navigation.navigate('EventDetail', { id: String(order.event), resetCart: true })
   }
 
   return (
@@ -47,17 +56,19 @@ export default function ConfirmationScreen({ navigation, route }: Props) {
       ) : (
         <>
           <ScrollView contentContainerClassName="px-4 py-6 gap-6" className="flex-1">
-            <View className="items-center gap-2 py-4">
-              <Icon as={CircleCheck} size={48} className="text-brand" />
+            <View className="items-center gap-3 py-4">
+              <Icon as={Mail} size={48} className="text-brand" />
               <Text variant="h2" className="text-center">
-                Booking Confirmed
+                Payment received
               </Text>
               <Text className="text-muted-foreground text-sm text-center">
                 {order.event_name} · Order #{order.id}
               </Text>
+              <Text className="text-muted-foreground text-sm text-center">
+                Your tickets are on their way to your email. You can also find them under My
+                Tickets once they're issued.
+              </Text>
             </View>
-
-            <OrderItemsList items={order.items} eventId={order.event} currencyCode={currencyCode} locale={locale} />
 
             <FeeBreakdown
               subtotal={subtotal}
@@ -72,8 +83,11 @@ export default function ConfirmationScreen({ navigation, route }: Props) {
             />
           </ScrollView>
 
-          <View className="border-t border-border px-4 py-3">
-            <Button onPress={handleDone}>
+          <View className="border-t border-border px-4 py-3 flex-row gap-3">
+            <Button variant="outline" onPress={handleMyTickets} className="flex-1">
+              <Text>My Tickets</Text>
+            </Button>
+            <Button onPress={handleDone} className="flex-1">
               <Text>Done</Text>
             </Button>
           </View>

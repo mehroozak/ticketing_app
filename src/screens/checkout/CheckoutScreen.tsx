@@ -76,7 +76,15 @@ export default function CheckoutScreen({ navigation, route }: Props) {
           voucher_code: appliedVoucher?.code,
         }),
       ).unwrap()
-      navigation.replace('Confirmation', { orderId: String(order.id) })
+      if (order.payment) {
+        navigation.replace('PaymentCheckout', {
+          orderId: String(order.id),
+          postUrl: order.payment.post_url,
+          fields: order.payment.fields,
+        })
+      } else {
+        navigation.replace('Confirmation', { orderId: String(order.id) })
+      }
     } catch {
       setIsSubmitting(false)
     }

@@ -21,6 +21,7 @@ export const END_POINTS = {
   EVENT_CHECKIN_LOGS: (eventId: string | number) => `/api/orders/checkin-logs/${eventId}/`,
   EVENT_TIERS: (eventId: string | number) => `/api/events/${eventId}/tiers/`,
   EVENT_WALKIN_ORDER_CREATE: (eventId: string | number) => `/api/orders/walk-in/${eventId}/`,
+  PAYMENT_STATUS: '/api/payments/status/',
   ENQUIRIES: '/api/enquiries/',
   VOUCHER_VALIDATE: '/api/vouchers/validate/',
 }

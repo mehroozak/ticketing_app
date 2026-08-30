@@ -25,7 +25,7 @@ export type BottomTabParamList = {
 
 export type ExploreStackParamList = {
   ExploreScreen: undefined;          // passlay.com/events
-  EventDetail: { id: string };       // passlay.com/events/:id
+  EventDetail: { id: string; resetCart?: boolean };       // passlay.com/events/:id
   Organizers: undefined;             // passlay.com/organizers
   OrganizerProfile: { slug: string }; // passlay.com/organizers/:slug
   Checkout: {
@@ -36,6 +36,8 @@ export type ExploreStackParamList = {
     hasRefundPolicy: boolean;
   };
   Confirmation: { orderId: string };
+  PaymentCheckout: { orderId: string; postUrl: string; fields: Record<string, string> };
+  PaymentFailure: { errMsg?: string };
 };
 
 export interface CheckoutItem {

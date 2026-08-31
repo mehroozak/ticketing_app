@@ -12,7 +12,7 @@ import { Input } from '../../../components/ui/input'
 import FeeBreakdown from '../../../components/orders/FeeBreakdown'
 import OrderItemsList from '../../../components/orders/OrderItemsList'
 import { formatPrice } from '../../../lib/dateUtils'
-import { computeFee } from '../../../lib/feeUtils'
+import { computeCommissionTax, computeFee } from '../../../lib/feeUtils'
 import { END_POINTS } from '../../../lib/endpoints'
 import { secureApi, type ApiEnvelope } from '../../../services/api'
 import { useAppDispatch, useAppSelector } from '../../../store/hooks'
@@ -25,7 +25,7 @@ import {
   selectTaxPercent,
 } from '../../../store/slices/settingsSlice'
 import type { StaffStackScreenProps } from '../../../navigation/types'
-import type { StaffTicketTier } from '../../../types/events'
+import type { StaffEventDetail, StaffTicketTier } from '../../../types/events'
 import type { PaymentMethod, WalkInOrderDetail } from '../../../types/orders'
 
 type Props = StaffStackScreenProps<'WalkInSale'>
@@ -60,6 +60,7 @@ export default function WalkInSaleScreen({ navigation, route }: Props) {
   const taxPercent = useAppSelector(selectTaxPercent)
 
   const [tiers, setTiers] = useState<StaffTicketTier[]>([])
+  const [commissionPercent, setCommissionPercent] = useState<string | null>(null)
   const [loadingTiers, setLoadingTiers] = useState(true)
   const [quantities, setQuantities] = useState<Record<number, number>>({})
   // Remembered across "Sell Another" for the rest of this screen's lifetime.
@@ -78,16 +79,20 @@ export default function WalkInSaleScreen({ navigation, route }: Props) {
   })
 
   useEffect(() => {
-    async function fetchTiers() {
+    // No screen upstream of walk-in sale (assigned events → check-in → here) already holds
+    // the full org-facing event object, so fetch it here — it carries both the ticket tiers
+    // and commission_percent (needed for the tax calc below) in a single call.
+    async function fetchEventDetail() {
       setLoadingTiers(true)
       try {
-        const res = await secureApi.get<ApiEnvelope<StaffTicketTier[]>>(END_POINTS.EVENT_TIERS(eventId))
-        setTiers(res.data.data)
+        const res = await secureApi.get<ApiEnvelope<StaffEventDetail>>(END_POINTS.EVENT_DETAIL(eventId))
+        setTiers(res.data.data.ticket_tiers)
+        setCommissionPercent(res.data.data.commission_percent)
       } finally {
         setLoadingTiers(false)
       }
     }
-    fetchTiers()
+    fetchEventDetail()
   }, [eventId])
 
   function changeQty(tierId: number, delta: number, max: number) {
@@ -102,9 +107,15 @@ export default function WalkInSaleScreen({ navigation, route }: Props) {
   const subtotal = tiers.reduce((s, t) => s + (quantities[t.id] ?? 0) * parseFloat(t.price), 0)
   const platformFeeAmount = computeFee(platformFee, subtotal)
   const processingFeeAmount = computeFee(processingFeeDefault, subtotal)
-  const taxAmount = computeFee({ type: 'percent', value: taxPercent }, subtotal)
-  const totalAmount = subtotal + platformFeeAmount + processingFeeAmount + taxAmount
-  const canSubmit = totalQty > 0
+
+  // No voucher/discount concept here, so the "discounted" subtotal is just the subtotal.
+  // commission_percent isn't guaranteed to be configured — the backend hard-validates it
+  // at order-create, so we refuse to submit rather than show a wrong estimate.
+  const commissionPercentValue = commissionPercent != null ? parseFloat(commissionPercent) : null
+  const taxAmount = computeCommissionTax(platformFeeAmount, commissionPercentValue, subtotal, taxPercent)
+  const commissionUnavailable = taxAmount === null
+  const totalAmount = subtotal + platformFeeAmount + processingFeeAmount + (taxAmount ?? 0)
+  const canSubmit = totalQty > 0 && !commissionUnavailable
 
   async function onSubmit(values: BuyerFormValues) {
     const items = tiers
@@ -309,15 +320,21 @@ export default function WalkInSaleScreen({ navigation, route }: Props) {
         </View>
 
         {totalQty > 0 && (
-          <FeeBreakdown
-            subtotal={subtotal}
-            platformFee={platformFeeAmount}
-            processingFee={processingFeeAmount}
-            tax={taxAmount}
-            total={totalAmount}
-            currencyCode={currencyCode}
-            locale={locale}
-          />
+          commissionUnavailable ? (
+            <Text className="text-destructive text-sm border-t border-border pt-4">
+              This event's commission hasn't been configured yet — walk-in sales are blocked until it is.
+            </Text>
+          ) : (
+            <FeeBreakdown
+              subtotal={subtotal}
+              platformFee={platformFeeAmount}
+              processingFee={processingFeeAmount}
+              tax={taxAmount ?? 0}
+              total={totalAmount}
+              currencyCode={currencyCode}
+              locale={locale}
+            />
+          )
         )}
       </ScrollView>
 
@@ -326,9 +343,11 @@ export default function WalkInSaleScreen({ navigation, route }: Props) {
           <Text>
             {isSubmitting
               ? 'Completing Sale…'
-              : canSubmit
-                ? `Complete Sale — ${formatPrice(totalAmount, currencyCode, locale)}`
-                : 'Select tickets to sell'}
+              : totalQty === 0
+                ? 'Select tickets to sell'
+                : commissionUnavailable
+                  ? 'Unavailable'
+                  : `Complete Sale — ${formatPrice(totalAmount, currencyCode, locale)}`}
           </Text>
         </Button>
       </View>

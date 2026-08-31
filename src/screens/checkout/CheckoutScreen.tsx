@@ -8,7 +8,7 @@ import { Button } from '../../components/ui/button'
 import { Input } from '../../components/ui/input'
 import FeeBreakdown from '../../components/orders/FeeBreakdown'
 import { formatPrice } from '../../lib/dateUtils'
-import { computeFee } from '../../lib/feeUtils'
+import { computeCommissionTax, computeFee } from '../../lib/feeUtils'
 import { END_POINTS } from '../../lib/endpoints'
 import { secureApi } from '../../services/api'
 import { useAppDispatch, useAppSelector } from '../../store/hooks'
@@ -25,7 +25,7 @@ import type { ExploreStackScreenProps } from '../../navigation/types'
 type Props = ExploreStackScreenProps<'Checkout'>
 
 export default function CheckoutScreen({ navigation, route }: Props) {
-  const { eventId, eventName, items, organizationSlug, hasRefundPolicy } = route.params
+  const { eventId, eventName, items, organizationSlug, hasRefundPolicy, commissionPercent } = route.params
   const dispatch = useAppDispatch()
   const currencyCode = useAppSelector(selectCurrencyCode)
   const locale = useAppSelector(selectLocale)
@@ -43,8 +43,13 @@ export default function CheckoutScreen({ navigation, route }: Props) {
   const discountedSubtotal = subtotal - discountAmount
   const platformFeeAmount = computeFee(platformFee, subtotal)
   const processingFeeAmount = computeFee(processingFeeDefault, discountedSubtotal)
-  const taxAmount = computeFee({ type: 'percent', value: taxPercent }, discountedSubtotal)
-  const totalAmount = discountedSubtotal + platformFeeAmount + processingFeeAmount + taxAmount
+
+  // commission_percent isn't guaranteed to be configured yet — the backend hard-validates
+  // it at order-create, so here we just refuse to submit rather than show a wrong total.
+  const commissionPercentValue = commissionPercent != null ? parseFloat(commissionPercent) : null
+  const taxAmount = computeCommissionTax(platformFeeAmount, commissionPercentValue, discountedSubtotal, taxPercent)
+  const commissionUnavailable = taxAmount === null
+  const totalAmount = discountedSubtotal + platformFeeAmount + processingFeeAmount + (taxAmount ?? 0)
 
   async function handleApplyVoucher() {
     if (!voucherCode.trim()) return
@@ -67,6 +72,7 @@ export default function CheckoutScreen({ navigation, route }: Props) {
   }
 
   async function handleConfirm() {
+    if (commissionUnavailable) return
     setIsSubmitting(true)
     try {
       const order = await dispatch(
@@ -143,16 +149,22 @@ export default function CheckoutScreen({ navigation, route }: Props) {
           </View>
         )}
 
-        <FeeBreakdown
-          subtotal={subtotal}
-          discount={discountAmount}
-          platformFee={platformFeeAmount}
-          processingFee={processingFeeAmount}
-          tax={taxAmount}
-          total={totalAmount}
-          currencyCode={currencyCode}
-          locale={locale}
-        />
+        {commissionUnavailable ? (
+          <Text className="text-destructive text-sm border-t border-border pt-4">
+            This event isn't available for checkout right now. Please check back soon.
+          </Text>
+        ) : (
+          <FeeBreakdown
+            subtotal={subtotal}
+            discount={discountAmount}
+            platformFee={platformFeeAmount}
+            processingFee={processingFeeAmount}
+            tax={taxAmount ?? 0}
+            total={totalAmount}
+            currencyCode={currencyCode}
+            locale={locale}
+          />
+        )}
 
         {hasRefundPolicy && (
           <Pressable onPress={() => navigation.navigate('OrganizerProfile', { slug: organizationSlug })}>
@@ -164,8 +176,14 @@ export default function CheckoutScreen({ navigation, route }: Props) {
       </ScrollView>
 
       <View className="border-t border-border px-4 py-3">
-        <Button onPress={handleConfirm} disabled={isSubmitting}>
-          <Text>{isSubmitting ? 'Placing order…' : `Confirm — ${formatPrice(totalAmount, currencyCode, locale)}`}</Text>
+        <Button onPress={handleConfirm} disabled={isSubmitting || commissionUnavailable}>
+          <Text>
+            {isSubmitting
+              ? 'Placing order…'
+              : commissionUnavailable
+                ? 'Unavailable'
+                : `Confirm — ${formatPrice(totalAmount, currencyCode, locale)}`}
+          </Text>
         </Button>
       </View>
     </SafeAreaView>

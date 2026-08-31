@@ -71,6 +71,17 @@ export interface PublicEventDetail {
   end_datetime: string | null
   banners: string[]
   ticket_tiers: TicketTier[]
+  commission_percent: string | null
+}
+
+// Org-facing event detail (GET /api/events/<id>/, EventDetailSerializer) — reachable by
+// org_admin and by org_staff assigned to the event. Only the fields the walk-in sale flow
+// needs are modeled here; add more as other org-facing screens need them.
+export interface StaffEventDetail {
+  id: number
+  name: string
+  ticket_tiers: StaffTicketTier[]
+  commission_percent: string | null
 }
 
 export interface PublicOrganizer {

@@ -8,7 +8,7 @@ import TierRow from '../../components/explore/TierRow'
 import { publicApi } from '../../services/api'
 import { END_POINTS } from '../../lib/endpoints'
 import { displayDate, displayTime, formatPrice } from '../../lib/dateUtils'
-import { computeFee } from '../../lib/feeUtils'
+import { computeCommissionTax, computeFee } from '../../lib/feeUtils'
 import { useAppSelector } from '../../store/hooks'
 import { selectIsAuthenticated } from '../../store/slices/authSlice'
 import {
@@ -76,8 +76,13 @@ export default function EventDetailScreen({ navigation, route }: Props) {
   const subtotal = tiers.reduce((s, t) => s + (quantities[t.id] ?? 0) * parseFloat(t.price), 0)
   const platformFeeAmount = computeFee(platformFee, subtotal)
   const processingFeeAmount = computeFee(processingFeeDefault, subtotal)
-  const taxAmount = computeFee({ type: 'percent', value: taxPercent }, subtotal)
-  const totalAmount = subtotal + platformFeeAmount + processingFeeAmount + taxAmount
+
+  // commission_percent isn't guaranteed to be configured yet — the backend hard-validates
+  // it at order-create, so here we just refuse to check out rather than show a wrong total.
+  const commissionPercentValue = event?.commission_percent != null ? parseFloat(event.commission_percent) : null
+  const taxAmount = computeCommissionTax(platformFeeAmount, commissionPercentValue, subtotal, taxPercent)
+  const commissionUnavailable = taxAmount === null
+  const totalAmount = subtotal + platformFeeAmount + processingFeeAmount + (taxAmount ?? 0)
 
   function handleCheckout() {
     if (!event) return
@@ -95,6 +100,7 @@ export default function EventDetailScreen({ navigation, route }: Props) {
       items,
       organizationSlug: event.organization_slug,
       hasRefundPolicy: event.organization_has_refund_policy,
+      commissionPercent: event.commission_percent,
     })
   }
 
@@ -214,15 +220,25 @@ export default function EventDetailScreen({ navigation, route }: Props) {
 
           {isAuthenticated && totalQty > 0 && (
             <View className="flex-row items-center justify-between gap-3 border-t border-border bg-card px-4 py-3">
-              <View>
-                <Text className="text-muted-foreground text-xs uppercase tracking-widest">Total</Text>
-                <Text className="text-foreground text-xl font-bold">
-                  {formatPrice(totalAmount, currencyCode, locale)}
+              {commissionUnavailable ? (
+                <Text className="text-muted-foreground text-sm flex-1">
+                  Tickets for this event aren't available for purchase right now. Please check back soon.
                 </Text>
-              </View>
-              <Pressable onPress={handleCheckout} className="rounded-md bg-brand px-8 py-3">
+              ) : (
+                <View>
+                  <Text className="text-muted-foreground text-xs uppercase tracking-widest">Total</Text>
+                  <Text className="text-foreground text-xl font-bold">
+                    {formatPrice(totalAmount, currencyCode, locale)}
+                  </Text>
+                </View>
+              )}
+              <Pressable
+                onPress={handleCheckout}
+                disabled={commissionUnavailable}
+                className={`rounded-md bg-brand px-8 py-3 ${commissionUnavailable ? 'opacity-30' : ''}`}
+              >
                 <Text className="text-background text-sm font-semibold uppercase tracking-widest">
-                  {`Checkout — ${totalQty} ${totalQty === 1 ? 'ticket' : 'tickets'}`}
+                  {commissionUnavailable ? 'Unavailable' : `Checkout — ${totalQty} ${totalQty === 1 ? 'ticket' : 'tickets'}`}
                 </Text>
               </Pressable>
             </View>

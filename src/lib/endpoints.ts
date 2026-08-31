@@ -19,6 +19,7 @@ export const END_POINTS = {
   STAFF_ASSIGNED_EVENTS: '/api/events/staff-assigned/',
   EVENT_CHECKIN_TICKETS: (eventId: string | number) => `/api/orders/checkin-tickets/${eventId}/`,
   EVENT_CHECKIN_LOGS: (eventId: string | number) => `/api/orders/checkin-logs/${eventId}/`,
+  EVENT_DETAIL: (eventId: string | number) => `/api/events/${eventId}/`,
   EVENT_TIERS: (eventId: string | number) => `/api/events/${eventId}/tiers/`,
   EVENT_WALKIN_ORDER_CREATE: (eventId: string | number) => `/api/orders/walk-in/${eventId}/`,
   PAYMENT_STATUS: '/api/payments/status/',

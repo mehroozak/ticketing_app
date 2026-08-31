@@ -34,6 +34,7 @@ export type ExploreStackParamList = {
     items: CheckoutItem[];
     organizationSlug: string;
     hasRefundPolicy: boolean;
+    commissionPercent: string | null;
   };
   Confirmation: { orderId: string };
   PaymentCheckout: { orderId: string; postUrl: string; fields: Record<string, string> };

@@ -1,6 +1,6 @@
 {
   "name": "ticketing_app",
-  "version": "0.8.0",
+  "version": "0.9.0",
   "private": true,
   "scripts": {
     "android": "react-native run-android",
@@ -13,6 +13,7 @@
   "dependencies": {
     "@gorhom/bottom-sheet": "^5.2.14",
     "@hookform/resolvers": "^5.4.0",
+    "@invertase/react-native-apple-authentication": "^2.5.1",
     "@kesha-antonov/react-native-chat": "^4.1.0",
     "@op-engineering/op-sqlite": "^17.1.2",
     "@react-native-async-storage/async-storage": "^3.1.1",

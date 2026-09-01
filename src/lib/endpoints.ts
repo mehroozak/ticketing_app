@@ -7,6 +7,7 @@ export const END_POINTS = {
   TOKEN_REFRESH: '/api/auth/token/refresh/',
   GOOGLE_AUTH: '/api/auth/google/',
   FACEBOOK_AUTH: '/api/auth/facebook/',
+  APPLE_AUTH: '/api/auth/apple/',
   CHECKIN: '/api/orders/checkin/',
   ORDERS: '/api/orders/',
   ORDER_DETAIL: (orderId: string | number) => `/api/orders/${orderId}/`,

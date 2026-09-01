@@ -1,5 +1,5 @@
 import * as React from 'react'
-import { View } from 'react-native'
+import { Platform, View } from 'react-native'
 import { Controller, useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { z } from 'zod'
@@ -58,7 +58,7 @@ type SignupFormValues = z.infer<typeof signupSchema>
 export default function SignupForm() {
   const navigation = useNavigation<NativeStackNavigationProp<AuthStackParamList, 'Signup'>>()
   const dispatch = useAppDispatch()
-  const { triggerGoogle, triggerFacebook, isGoogleLoading, isFacebookLoading } = useSocialAuth()
+  const { triggerGoogle, triggerApple, isGoogleLoading, isAppleLoading } = useSocialAuth()
 
   const {
     control,
@@ -390,11 +390,13 @@ export default function SignupForm() {
           <Text className="mx-auto bg-background px-2 text-xs uppercase text-muted-foreground">or</Text>
         </View>
 
+        {Platform.OS === 'ios' && (
+          <Button variant="outline" onPress={triggerApple} disabled={isAppleLoading}>
+            <Text>{isAppleLoading ? 'Signing in…' : 'Continue with Apple'}</Text>
+          </Button>
+        )}
         <Button variant="outline" onPress={triggerGoogle} disabled={isGoogleLoading}>
           <Text>{isGoogleLoading ? 'Signing in…' : 'Continue with Google'}</Text>
-        </Button>
-        <Button variant="outline" onPress={triggerFacebook} disabled={isFacebookLoading}>
-          <Text>{isFacebookLoading ? 'Signing in…' : 'Continue with Facebook'}</Text>
         </Button>
       </View>
 

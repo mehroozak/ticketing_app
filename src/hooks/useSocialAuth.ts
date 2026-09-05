@@ -33,6 +33,13 @@ export function useSocialAuth() {
     setLoadingProvider('google')
     try {
       await GoogleSignin.hasPlayServices()
+
+      // The SDK caches the last-signed-in Google account on-device and silently
+      // reuses it on the next signIn() with no account picker shown — a real problem
+      // on a shared device (a second user would be logged in as the first user's
+      // Google account). Signing out first forces the picker to appear every time.
+      await GoogleSignin.signOut()
+
       const result = await GoogleSignin.signIn()
       if (result.type !== 'success') return
 

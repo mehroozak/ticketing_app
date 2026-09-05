@@ -58,12 +58,12 @@ export default function EventFilters({ values, cities, categories, onChange }: P
       <View className="flex-row flex-wrap gap-2">
         <View className="flex-1 min-w-32">
           <Select
-            value={selectedCity ? { value: values.city, label: selectedCity.display_name ?? '' } : undefined}
+            value={{ value: values.city, label: selectedCity?.display_name ?? 'All Cities' }}
             onValueChange={(option) => set('city', option?.value ?? '')}>
             <SelectTrigger>
               <SelectValue placeholder="All Cities" />
             </SelectTrigger>
-            <SelectContent>
+            <SelectContent defaultTitle="All Cities">
               {cities.map((c) => (
                 <SelectItem key={c.id} value={String(c.id)} label={c.display_name ?? c.value} />
               ))}
@@ -73,16 +73,12 @@ export default function EventFilters({ values, cities, categories, onChange }: P
 
         <View className="flex-1 min-w-32">
           <Select
-            value={
-              selectedCategory
-                ? { value: values.category, label: selectedCategory.display_name ?? '' }
-                : undefined
-            }
+            value={{ value: values.category, label: selectedCategory?.display_name ?? 'All Categories' }}
             onValueChange={(option) => set('category', option?.value ?? '')}>
             <SelectTrigger>
               <SelectValue placeholder="All Categories" />
             </SelectTrigger>
-            <SelectContent>
+            <SelectContent defaultTitle="All Categories">
               {categories.map((c) => (
                 <SelectItem key={c.id} value={String(c.id)} label={c.display_name ?? c.value} />
               ))}

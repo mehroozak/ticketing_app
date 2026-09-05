@@ -15,7 +15,14 @@ export const END_POINTS = {
   PUBLIC_EVENTS_UPCOMING: '/api/events/public/upcoming/',
   PUBLIC_EVENTS_HAPPENING: '/api/events/public/happening/',
   PUBLIC_EVENT_DETAIL: (eventId: string | number) => `/api/events/public/${eventId}/`,
-  PUBLIC_ORGANIZERS: '/api/organization/public/',
+  PUBLIC_ORGANIZERS: (params?: { search?: string; limit?: number; offset?: number }) => {
+    const qs = new URLSearchParams()
+    if (params?.search) qs.set('search', params.search)
+    if (params?.limit !== undefined) qs.set('limit', String(params.limit))
+    if (params?.offset !== undefined) qs.set('offset', String(params.offset))
+    const query = qs.toString()
+    return `/api/organization/public/${query ? `?${query}` : ''}`
+  },
   PUBLIC_ORGANIZER_DETAIL: (slug: string) => `/api/organization/public/${slug}/`,
   STAFF_ASSIGNED_EVENTS: '/api/events/staff-assigned/',
   EVENT_CHECKIN_TICKETS: (eventId: string | number) => `/api/orders/checkin-tickets/${eventId}/`,

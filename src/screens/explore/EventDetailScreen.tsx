@@ -1,9 +1,10 @@
 import React, { useCallback, useEffect, useState } from 'react'
-import { ActivityIndicator, Image, Pressable, ScrollView, View } from 'react-native'
+import { ActivityIndicator, Pressable, ScrollView, View } from 'react-native'
 import { Calendar, ChevronLeft, Clock, MapPin } from 'lucide-react-native'
 import { SafeAreaView } from '../../components/ui/safe-area-view'
 import { Icon } from '../../components/ui/icon'
 import { Text } from '../../components/ui/text'
+import BannerCarousel from '../../components/explore/BannerCarousel'
 import TierRow from '../../components/explore/TierRow'
 import { publicApi } from '../../services/api'
 import { END_POINTS } from '../../lib/endpoints'
@@ -126,9 +127,7 @@ export default function EventDetailScreen({ navigation, route }: Props) {
       ) : (
         <>
           <ScrollView contentContainerClassName="pb-6" className="flex-1">
-            {event.banners[0] && (
-              <Image source={{ uri: event.banners[0] }} className="w-full aspect-[16/9]" resizeMode="cover" />
-            )}
+            <BannerCarousel banners={event.banners} name={event.name} />
 
             <View className="px-4 gap-4 mt-4">
               <View>

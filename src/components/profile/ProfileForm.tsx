@@ -191,13 +191,13 @@ export default function ProfileForm() {
             name="gender"
             render={({ field: { value, onChange } }) => (
               <Select
-                value={value ? { value, label: GENDER_OPTIONS.find((g) => g.value === value)?.label ?? '' } : undefined}
+                value={{ value: value ?? '', label: GENDER_OPTIONS.find((g) => g.value === value)?.label ?? 'Select gender' }}
                 onValueChange={(option) => onChange(option?.value)}
                 disabled={isSubmitting}>
                 <SelectTrigger>
                   <SelectValue placeholder="Select gender" />
                 </SelectTrigger>
-                <SelectContent>
+                <SelectContent defaultTitle="Select gender">
                   {GENDER_OPTIONS.map((g) => (
                     <SelectItem key={g.value} value={g.value} label={g.label} />
                   ))}
@@ -229,13 +229,13 @@ export default function ProfileForm() {
             name="country"
             render={({ field: { value, onChange } }) => (
               <Select
-                value={value ? { value, label: value } : undefined}
+                value={{ value: value ?? '', label: value || 'Select country' }}
                 onValueChange={(option) => onChange(option?.value)}
                 disabled={isSubmitting}>
                 <SelectTrigger>
                   <SelectValue placeholder="Select country" />
                 </SelectTrigger>
-                <SelectContent>
+                <SelectContent defaultTitle="Select country">
                   {allCountries.map((c) => (
                     <SelectItem key={c.id} value={c.display_name ?? c.value} label={c.display_name ?? c.value} />
                   ))}
@@ -254,13 +254,13 @@ export default function ProfileForm() {
             name="state"
             render={({ field: { value, onChange } }) => (
               <Select
-                value={value ? { value, label: value } : undefined}
+                value={{ value: value ?? '', label: value || 'Select state' }}
                 onValueChange={(option) => onChange(option?.value)}
                 disabled={isSubmitting || !selectedCountryLookup}>
                 <SelectTrigger>
                   <SelectValue placeholder="Select state" />
                 </SelectTrigger>
-                <SelectContent>
+                <SelectContent defaultTitle="Select state">
                   {filteredStates.map((s) => (
                     <SelectItem key={s.id} value={s.display_name ?? s.value} label={s.display_name ?? s.value} />
                   ))}
@@ -279,13 +279,13 @@ export default function ProfileForm() {
             name="city"
             render={({ field: { value, onChange } }) => (
               <Select
-                value={value ? { value, label: value } : undefined}
+                value={{ value: value ?? '', label: value || 'Select city' }}
                 onValueChange={(option) => onChange(option?.value)}
                 disabled={isSubmitting || !selectedCountryLookup}>
                 <SelectTrigger>
                   <SelectValue placeholder="Select city" />
                 </SelectTrigger>
-                <SelectContent>
+                <SelectContent defaultTitle="Select city">
                   {filteredCities.map((c) => (
                     <SelectItem key={c.id} value={c.display_name ?? c.value} label={c.display_name ?? c.value} />
                   ))}

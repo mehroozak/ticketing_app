@@ -84,10 +84,16 @@ function SelectContent({
   children,
   position = 'popper',
   portalHost,
+  defaultTitle,
+  defaultValue = '',
   ...props
 }: React.ComponentProps<typeof SelectPrimitive.Content> & {
     className?: string;
     portalHost?: string;
+    /** Optional leading option (e.g. "All Cities") rendered before the rest of the items. */
+    defaultTitle?: string;
+    /** Value for the leading option. Defaults to "", matching this app's unset-filter sentinel. */
+    defaultValue?: string;
   }) {
   return (
     <SelectPrimitive.Portal hostName={portalHost}>
@@ -135,7 +141,10 @@ function SelectContent({
                       })
                     )
                   )}>
-                  <NativeSelectScrollView>{children}</NativeSelectScrollView>
+                  <NativeSelectScrollView>
+                    {defaultTitle && <SelectItem value={defaultValue} label={defaultTitle} />}
+                    {children}
+                  </NativeSelectScrollView>
                 </SelectPrimitive.Viewport>
                 <SelectScrollDownButton />
               </SelectPrimitive.Content>

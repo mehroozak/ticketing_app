@@ -20,9 +20,9 @@ import {
   selectProcessingFeeDefault,
   selectTaxPercent,
 } from '../../store/slices/settingsSlice'
-import type { ExploreStackScreenProps } from '../../navigation/types'
+import type { CheckoutScreenProps } from '../../navigation/types'
 
-type Props = ExploreStackScreenProps<'Checkout'>
+type Props = CheckoutScreenProps
 
 export default function CheckoutScreen({ navigation, route }: Props) {
   const { eventId, eventName, items, organizationSlug, hasRefundPolicy, commissionPercent } = route.params

@@ -5,9 +5,9 @@ import { SafeAreaView } from '../../components/ui/safe-area-view'
 import { Icon } from '../../components/ui/icon'
 import { Text } from '../../components/ui/text'
 import { Button } from '../../components/ui/button'
-import type { ExploreStackScreenProps } from '../../navigation/types'
+import type { PaymentFailureScreenProps } from '../../navigation/types'
 
-type Props = ExploreStackScreenProps<'PaymentFailure'>
+type Props = PaymentFailureScreenProps
 
 // No network call — pending/unpaid orders are cleaned up by a separate cron, not from here.
 export default function PaymentFailureScreen({ navigation, route }: Props) {

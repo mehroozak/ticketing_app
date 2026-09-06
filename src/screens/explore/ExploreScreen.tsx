@@ -1,8 +1,6 @@
 import React, { useCallback, useEffect, useRef, useState } from 'react'
-import { ActivityIndicator, FlatList, Pressable, RefreshControl, View } from 'react-native'
-import { Users } from 'lucide-react-native'
+import { ActivityIndicator, FlatList, RefreshControl, View } from 'react-native'
 import { SafeAreaView } from '../../components/ui/safe-area-view'
-import { Icon } from '../../components/ui/icon'
 import { Text } from '../../components/ui/text'
 import EventFilters, { EMPTY_FILTERS, type FilterValues } from '../../components/explore/EventFilters'
 import PublicEventCard from '../../components/explore/PublicEventCard'
@@ -84,13 +82,6 @@ export default function ExploreScreen({ navigation }: ExploreStackScreenProps<'E
     <View className="flex-1 bg-background">
       <SafeAreaView className="flex-1" edges={['top']}>
         <View className="px-4 bg-background mb-4 gap-3">
-          <Pressable
-            onPress={() => navigation.navigate('Organizers')}
-            className="flex-row items-center justify-end gap-1.5 self-end"
-          >
-            <Icon as={Users} size={14} className="text-brand" />
-            <Text className="text-brand text-xs font-semibold uppercase tracking-widest">Organizers</Text>
-          </Pressable>
           <EventFilters values={filters} cities={cities} categories={categories} onChange={setFilters} />
         </View>
 

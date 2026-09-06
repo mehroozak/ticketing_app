@@ -9,9 +9,9 @@ import FeeBreakdown from '../../components/orders/FeeBreakdown'
 import { useAppDispatch, useAppSelector } from '../../store/hooks'
 import { clearOrders, fetchOrderDetail, selectOrderDetail } from '../../store/slices/ordersSlice'
 import { selectCurrencyCode, selectLocale } from '../../store/slices/settingsSlice'
-import type { ExploreStackScreenProps } from '../../navigation/types'
+import type { ConfirmationScreenProps } from '../../navigation/types'
 
-type Props = ExploreStackScreenProps<'Confirmation'>
+type Props = ConfirmationScreenProps
 
 // No ticket display here — the IPN can take a few minutes to settle, and tickets only
 // exist once it does. Point the customer at My Tickets instead of gating this screen on

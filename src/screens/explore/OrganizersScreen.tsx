@@ -6,10 +6,10 @@ import { Input } from '../../components/ui/input'
 import OrganizerCard from '../../components/explore/OrganizerCard'
 import { publicApi } from '../../services/api'
 import { END_POINTS } from '../../lib/endpoints'
-import type { ExploreStackScreenProps } from '../../navigation/types'
+import type { OrganizersStackScreenProps } from '../../navigation/types'
 import type { PublicOrganizer, PublicOrganizerListResponse } from '../../types/events'
 
-export default function OrganizersScreen({ navigation }: ExploreStackScreenProps<'Organizers'>) {
+export default function OrganizersScreen({ navigation }: OrganizersStackScreenProps<'OrganizersScreen'>) {
   const [search, setSearch] = useState('')
   const [organizers, setOrganizers] = useState<PublicOrganizer[]>([])
   const [nextUrl, setNextUrl] = useState<string | null>(null)

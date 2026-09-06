@@ -23,6 +23,7 @@ export interface PublicEvent {
   start_datetime: string | null
   end_datetime: string | null
   banners: string[]
+  gallery: string[]
   min_price: string | null
 }
 

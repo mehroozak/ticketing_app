@@ -5,9 +5,9 @@ import { SafeAreaView } from '../../components/ui/safe-area-view'
 import { buildAutoSubmitHtml } from '../../lib/gateway'
 import { useAppSelector } from '../../store/hooks'
 import { selectCheckoutFailureUrl, selectCheckoutSuccessUrl } from '../../store/slices/settingsSlice'
-import type { ExploreStackScreenProps } from '../../navigation/types'
+import type { PaymentCheckoutScreenProps } from '../../navigation/types'
 
-type Props = ExploreStackScreenProps<'PaymentCheckout'>
+type Props = PaymentCheckoutScreenProps
 
 export default function PaymentCheckoutScreen({ navigation, route }: Props) {
   const { orderId, postUrl, fields } = route.params

@@ -1,13 +1,14 @@
 import React from 'react'
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'
 import { useTheme } from '@react-navigation/native'
-import { House, Search, CircleQuestionMark, KeyRound, LayoutDashboard } from 'lucide-react-native'
+import { House, Search, Users, CircleQuestionMark, KeyRound, LayoutDashboard } from 'lucide-react-native'
 import type { BottomTabParamList } from './types'
 import { BRAND_COLOR, MUTED_FOREGROUND } from '../lib/nav-theme'
 import { useAppSelector } from '../store/hooks'
 import { selectIsAuthenticated } from '../store/slices/authSlice'
 import HomeScreen from '../screens/home/HomeScreen'
 import ExploreStackNavigator from './ExploreStackNavigator'
+import OrganizersStackNavigator from './OrganizersStackNavigator'
 import QueriesStackNavigator from './QueriesStackNavigator'
 import PortalTab from './PortalTab'
 
@@ -35,6 +36,11 @@ export default function BottomTabNavigator() {
         name="Explore"
         component={ExploreStackNavigator}
         options={{ tabBarIcon: ({ color, size }) => <Search color={color} size={size} /> }}
+      />
+      <Tab.Screen
+        name="Organizers"
+        component={OrganizersStackNavigator}
+        options={{ tabBarIcon: ({ color, size }) => <Users color={color} size={size} /> }}
       />
       <Tab.Screen
         name="Queries"

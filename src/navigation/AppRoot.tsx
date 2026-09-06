@@ -34,7 +34,12 @@ const linking: LinkingOptions<RootStackParamList> = {
             screens: {
               ExploreScreen: 'events',
               EventDetail: 'events/:id',
-              Organizers: 'organizers',
+            },
+          } as any,
+          Organizers: {
+            initialRouteName: 'OrganizersScreen',
+            screens: {
+              OrganizersScreen: 'organizers',
               OrganizerProfile: 'organizers/:slug',
             },
           } as any,

@@ -1,6 +1,6 @@
 import React, { useCallback, useEffect, useState } from 'react'
-import { ActivityIndicator, Pressable, ScrollView, View } from 'react-native'
-import { Calendar, ChevronLeft, Clock, MapPin } from 'lucide-react-native'
+import { ActivityIndicator, Pressable, ScrollView, Share, View } from 'react-native'
+import { Calendar, ChevronLeft, Clock, MapPin, Share2 } from 'lucide-react-native'
 import { SafeAreaView } from '../../components/ui/safe-area-view'
 import { Icon } from '../../components/ui/icon'
 import { Text } from '../../components/ui/text'
@@ -19,10 +19,10 @@ import {
   selectProcessingFeeDefault,
   selectTaxPercent,
 } from '../../store/slices/settingsSlice'
-import type { CheckoutItem, ExploreStackScreenProps } from '../../navigation/types'
+import type { CheckoutItem, EventDetailScreenProps } from '../../navigation/types'
 import type { PublicEventDetail } from '../../types/events'
 
-type Props = ExploreStackScreenProps<'EventDetail'>
+type Props = EventDetailScreenProps
 
 export default function EventDetailScreen({ navigation, route }: Props) {
   const { id, resetCart } = route.params
@@ -105,15 +105,25 @@ export default function EventDetailScreen({ navigation, route }: Props) {
     })
   }
 
+  const handleShare = () => {
+    if (!event) return
+    Share.share({ message: `https://passlay.com/events/${event.id}` })
+  }
+
   return (
     <SafeAreaView className="flex-1 bg-background" edges={['top']}>
       <View className="relative flex-row items-center justify-center px-12 py-3">
-        <Pressable onPress={() => navigation.navigate('ExploreScreen')} hitSlop={12} className="absolute left-4">
+        <Pressable onPress={() => navigation.goBack()} hitSlop={12} className="absolute left-4">
           <Icon as={ChevronLeft} size={24} />
         </Pressable>
         <Text variant="h3" numberOfLines={1} className="text-center">
           {event?.name ?? 'Event'}
         </Text>
+        {event && (
+          <Pressable onPress={handleShare} hitSlop={12} className="absolute right-4">
+            <Icon as={Share2} size={22} />
+          </Pressable>
+        )}
       </View>
 
       {loading ? (

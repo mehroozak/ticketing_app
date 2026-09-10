@@ -2,6 +2,7 @@ import React from 'react'
 import { ScrollView, View } from 'react-native'
 import { Text } from '../../../components/ui/text'
 import ProfileForm from '../../../components/profile/ProfileForm'
+import DeleteAccountSection from '../../../components/profile/DeleteAccountSection'
 import { useAppSelector } from '../../../store/hooks'
 import { selectUser } from '../../../store/slices/authSlice'
 import { displayDate } from '../../../lib/dateUtils'
@@ -68,6 +69,9 @@ export default function ProfileScreen() {
           </Text>
           <ProfileForm />
         </View>
+
+        {/* Delete account */}
+        <DeleteAccountSection />
       </ScrollView>
     </View>
   )

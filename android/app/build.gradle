@@ -90,8 +90,8 @@ android {
         applicationId "com.passlay.app"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
-        versionCode 12
-        versionName "0.11.0"
+        versionCode 13
+        versionName "0.11.1"
     }
     signingConfigs {
         debug {

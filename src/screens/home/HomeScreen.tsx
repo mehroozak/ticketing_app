@@ -36,7 +36,11 @@ export default function HomeScreen({ navigation }: BottomTabScreenProps_<'Home'>
   }, [getUpcoming])
 
   const handlePress = (event: PublicEvent) => {
-    navigation.navigate('Explore', { screen: 'EventDetail', params: { id: String(event.id) } })
+    navigation.navigate('Explore', {
+      screen: 'EventDetail',
+      params: { id: String(event.id) },
+      initial: false,
+    })
   }
 
   return (

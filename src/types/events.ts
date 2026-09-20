@@ -13,6 +13,7 @@ export interface LookupMini {
 
 export interface PublicEvent {
   id: number
+  slug: string
   name: string
   description: string
   organization_name: string
@@ -59,6 +60,7 @@ export interface StaffTicketTier extends TicketTier {
 
 export interface PublicEventDetail {
   id: number
+  slug: string
   name: string
   description: string
   organization_name: string

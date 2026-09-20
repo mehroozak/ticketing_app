@@ -43,7 +43,7 @@ export default function OrganizerProfileScreen({ navigation, route }: Props) {
   }, [getOrganizer])
 
   const handleEventPress = (event: PublicEvent) => {
-    navigation.navigate('EventDetail', { id: String(event.id) })
+    navigation.navigate('EventDetail', { id: event.slug })
   }
 
   const galleryAlbums = organizer?.previous_events.filter((event) => event.gallery.length > 0) ?? []

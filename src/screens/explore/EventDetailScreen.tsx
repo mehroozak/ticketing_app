@@ -107,7 +107,7 @@ export default function EventDetailScreen({ navigation, route }: Props) {
 
   const handleShare = () => {
     if (!event) return
-    Share.share({ message: `https://passlay.com/events/${event.id}` })
+    Share.share({ message: `https://passlay.com/events/${event.slug}` })
   }
 
   return (

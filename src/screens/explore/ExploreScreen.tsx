@@ -75,7 +75,7 @@ export default function ExploreScreen({ navigation }: ExploreStackScreenProps<'E
   }
 
   const handlePress = (event: PublicEvent) => {
-    navigation.navigate('EventDetail', { id: String(event.id) })
+    navigation.navigate('EventDetail', { id: event.slug })
   }
 
   return (

@@ -11,6 +11,7 @@ export const END_POINTS = {
   CHECKIN: '/api/orders/checkin/',
   ORDERS: '/api/orders/',
   ORDER_DETAIL: (orderId: string | number) => `/api/orders/${orderId}/`,
+  ORDER_PDF: (orderId: string | number) => `/api/orders/${orderId}/tickets.pdf/`,
   PUBLIC_EVENTS: '/api/events/public/',
   PUBLIC_EVENTS_UPCOMING: '/api/events/public/upcoming/',
   PUBLIC_EVENTS_HAPPENING: '/api/events/public/happening/',

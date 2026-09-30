@@ -63,6 +63,8 @@
 	</dict>
 	<key>NSCameraUsageDescription</key>
 	<string>Used to scan ticket QR codes at event check-in.</string>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>Passlay uses your photo library so you can save or share your event tickets.</string>
 	<key>RCTNewArchEnabled</key>
 	<true/>
 	<key>UILaunchStoryboardName</key>

@@ -1,10 +1,13 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import { ActivityIndicator, Pressable, ScrollView, View } from 'react-native'
-import { ChevronLeft } from 'lucide-react-native'
+import { ChevronLeft, Download } from 'lucide-react-native'
+import Toast from 'react-native-toast-message'
 import { SafeAreaView } from '../../../components/ui/safe-area-view'
 import { Icon } from '../../../components/ui/icon'
 import { Text } from '../../../components/ui/text'
+import { Button } from '../../../components/ui/button'
 import OrderItemsList from '../../../components/orders/OrderItemsList'
+import { downloadOrderTicketPdf } from '../../../lib/downloadTicket'
 import { useAppDispatch, useAppSelector } from '../../../store/hooks'
 import { fetchOrderDetail, selectOrderDetail, selectOrderDetailStatus } from '../../../store/slices/ordersSlice'
 import { selectCurrencyCode, selectLocale } from '../../../store/slices/settingsSlice'
@@ -19,6 +22,7 @@ export default function OrderDetailScreen({ navigation, route }: Props) {
   const status = useAppSelector(selectOrderDetailStatus)
   const currencyCode = useAppSelector(selectCurrencyCode)
   const locale = useAppSelector(selectLocale)
+  const [downloading, setDownloading] = useState(false)
 
   // Same drawer-header stacking pattern as EventCheckinScreen — hide it only while focused.
   useEffect(() => {
@@ -30,6 +34,18 @@ export default function OrderDetailScreen({ navigation, route }: Props) {
   useEffect(() => {
     dispatch(fetchOrderDetail(Number(orderId)))
   }, [dispatch, orderId])
+
+  async function handleDownload() {
+    if (!order) return
+    setDownloading(true)
+    try {
+      await downloadOrderTicketPdf(order.id)
+    } catch {
+      Toast.show({ type: 'error', text1: 'Could not download ticket. Please try again.' })
+    } finally {
+      setDownloading(false)
+    }
+  }
 
   return (
     <SafeAreaView className="flex-1 bg-background" edges={['top']}>
@@ -55,6 +71,11 @@ export default function OrderDetailScreen({ navigation, route }: Props) {
           <Text className="text-muted-foreground text-sm">
             Order #{order.id} · {order.order_status}
           </Text>
+
+          <Button variant="outline" onPress={handleDownload} disabled={downloading} className="self-start">
+            {downloading ? <ActivityIndicator size="small" /> : <Icon as={Download} size={18} />}
+            <Text>{downloading ? 'Downloading…' : 'Download Ticket'}</Text>
+          </Button>
 
           <OrderItemsList items={order.items} eventId={order.event} currencyCode={currencyCode} locale={locale} />
         </ScrollView>

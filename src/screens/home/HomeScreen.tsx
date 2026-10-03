@@ -83,7 +83,7 @@ export default function HomeScreen({ navigation }: BottomTabScreenProps_<'Home'>
                 <View className="gap-3">
                   <View className="flex-row items-center gap-2 px-4">
                     <Icon as={Calendar} size={20} className="text-brand" />
-                    <Text className="text-foreground text-2xl font-semibold">Happening Today</Text>
+                    <Text className="text-foreground text-2xl font-semibold">Featuring</Text>
                   </View>
                   <HappeningTodayCarousel events={todayEvents} onPressEvent={handlePress} />
                 </View>
